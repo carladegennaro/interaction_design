@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ES01_ISS</title>
+</head>
+<body>
+
+    <script>
+        const API_URL = 'http://api.open-notify.org/iss-now.json'
+       
+        fetch(API_URL)
+            .then(r => r.json())
+            .then(data => {
+                const { latitude, longitude } = data.iss_position;
+
+                document.body.innerHTML = `<h1>Posizione attuale della ISS:</h1>`;
+                document.body.innerHTML += `Latitudine: ${latitude} <br>`;
+                document.body.innerHTML += `Longitudine: ${longitude} <br>`;
+            })
+
+    </script>
+
+</body>
+</html>
