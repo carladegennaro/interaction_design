@@ -20,27 +20,34 @@
 <body>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
     <script>
+/////creazione variabile e assegnazione valore
+        let moscaX = 300;
+        let moscaY = 200;
+
+
         function setup() {
             createCanvas(windowWidth, innerHeight);
             
         }
-
+        //ciotola
         function draw() {
             background(220);
+            
+            fill(255);
             ellipse(200, 200, 100, 100);
 
-            for (let i = 0; i < 10; i++) {
-                let x = random();
-                let y = random(height);
-                ellipse(x, y, 50, 50);
-            }
-        }
+            //mosca
+            fill(0);
+            ellipse(moscaX, moscaY, 10, 10);
 
+            moscaX = moscaX + random(-1, 1);
+            moscaY = moscaY + random(-1, 1);
+        }
         function windowResized() {
             resizeCanvas(windowWidth, innerHeight);
         }
 
-    
+        
 
     </script>
 </body>
