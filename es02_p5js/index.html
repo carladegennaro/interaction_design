@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ES02_p5js</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+    <script>
+        function setup() {
+            createCanvas(windowWidth, innerHeight);
+            
+        }
+
+        function draw() {
+            background(220);
+            ellipse(200, 200, 100, 100);
+
+            for (let i = 0; i < 10; i++) {
+                let x = random();
+                let y = random(height);
+                ellipse(x, y, 50, 50);
+            }
+        }
+
+        function windowResized() {
+            resizeCanvas(windowWidth, innerHeight);
+        }
+
+    
+
+    </script>
+</body>
+</html>
