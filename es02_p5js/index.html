@@ -1,54 +1,210 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ES02_p5js</title>
-
+    <title>Satellite Radar 3D - Data Link Edition</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <script src="https://unpkg.com/satellite.js/dist/satellite.min.js"></script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
+        body { margin: 0; padding: 0; overflow: hidden; background-color: #020508; }
+        #info {
+            position: absolute; top: 20px; left: 20px;
+            color: #0f0; font-family: 'Courier New', monospace;
+            background: rgba(0, 5, 10, 0.9); padding: 15px;
+            border: 1px solid #004411; z-index: 100;
+            pointer-events: none; border-radius: 2px;
         }
-
-        canvas {
-            display: block;
+        /* Pannello Info Satellite Selezionato */
+        #datalink {
+            position: absolute; top: 20px; right: 20px;
+            color: #0ff; font-family: 'Courier New', monospace;
+            background: rgba(0, 10, 20, 0.9); padding: 15px;
+            border: 1px solid #00ffff; width: 250px;
+            display: none; border-left: 5px solid #0ff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
         }
+        #status { font-weight: bold; color: #fff; text-shadow: 0 0 5px #0f0; }
+        #ts { font-size: 0.8em; color: #0a0; margin-top: 10px; }
+        .val { color: #fff; }
     </style>
 </head>
 <body>
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
-    <script>
-/////creazione variabile e assegnazione valore
-        let moscaX = 300;
-        let moscaY = 200;
 
+<div id="info">
+    <div id="status">SYNCING ORBITS...</div>
+    <div id="count">READY</div>
+    <div id="ts"></div>
+    
+</div>
 
-        function setup() {
-            createCanvas(windowWidth, innerHeight);
-            
+<div id="datalink">
+    <div style="font-size: 0.8em; opacity: 0.7;">> TARGET ACQUIRED:</div>
+    <div id="sat-name" style="font-size: 1.2em; font-weight: bold; margin: 5px 0;">---</div>
+    <hr style="border: 0; border-top: 1px solid #044;">
+    <div>ALTITUDE: <span id="sat-alt" class="val">0</span> km</div>
+    <div>VELOCITY: <span id="sat-vel" class="val">0</span> km/s</div>
+    <div>LAT: <span id="sat-lat" class="val">0</span>°</div>
+    <div>LON: <span id="sat-lon" class="val">0</span>°</div>
+</div>
+
+<script>
+let globeRadius = 200;
+let satellitesRecs = [];
+let dataReady = false;
+let earthTexture;
+let countryData;
+let selectedSat = null;
+
+const TLE_URL = "https://celestrak.org/NORAD/elements/gp.php?GROUP=active&FORMAT=tle";
+const PROXY = "https://corsproxy.io/?";
+const MAP_DATA = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson";
+
+function preload() {
+    countryData = loadJSON(MAP_DATA);
+}
+
+function setup() {
+    createCanvas(windowWidth, windowHeight, WEBGL);
+    earthTexture = createGraphics(1600, 800);
+    drawCyberEarth();
+    fetchTLEData();
+}
+
+function drawCyberEarth() {
+    earthTexture.background(2, 8, 15);
+    earthTexture.stroke(0, 180, 255, 150);
+    earthTexture.fill(10, 30, 70);
+    if (countryData && countryData.features) {
+        countryData.features.forEach(feature => {
+            let geom = feature.geometry;
+            if (geom.type === "Polygon") drawPolygon(geom.coordinates[0]);
+            else if (geom.type === "MultiPolygon") geom.coordinates.forEach(p => drawPolygon(p[0]));
+        });
+    }
+    earthTexture.noFill();
+    earthTexture.stroke(0, 80, 200, 40);
+    for (let i = 0; i <= 1600; i += 80) earthTexture.line(i, 0, i, 800);
+    for (let j = 0; j <= 800; j += 80) earthTexture.line(0, j, 1600, j);
+}
+
+function drawPolygon(coords) {
+    earthTexture.beginShape();
+    coords.forEach(pt => {
+        let x = map(pt[0], -180, 180, 0, 1600);
+        let y = map(pt[1], 90, -90, 0, 800);
+        earthTexture.vertex(x, y);
+    });
+    earthTexture.endShape(CLOSE);
+}
+
+async function fetchTLEData() {
+    try {
+        const response = await fetch(PROXY + encodeURIComponent(TLE_URL));
+        const tles = await response.text();
+        const lines = tles.split('\n');
+        satellitesRecs = [];
+        for (let i = 0; i < lines.length - 2; i += 3) {
+            let name = lines[i].trim();
+            let satrec = satellite.twoline2satrec(lines[i+1].trim(), lines[i+2].trim());
+            if (satrec) satellitesRecs.push({ rec: satrec, name: name });
         }
-        //ciotola
-        function draw() {
-            background(220);
-            
-            fill(255);
-            ellipse(200, 200, 100, 100);
+        dataReady = true;
+        document.getElementById('status').innerText = "REAL-TIME TRACKING";
+        document.getElementById('count').innerText = `SATELLITES: ${satellitesRecs.length}`;
+    } catch (e) {
+        document.getElementById('status').innerText = "CONNECTION ERROR";
+    }
+}
 
-            //mosca
-            fill(0);
-            ellipse(moscaX, moscaY, 10, 10);
+function mousePressed() {
+    
 
-            moscaX = moscaX + random(-1, 1);
-            moscaY = moscaY + random(-1, 1);
+    for (let sat of satellitesRecs) {
+        let pv = satellite.propagate(sat.rec, now);
+        let p = pv.position;
+        if (p) {
+            let sx = screenX(p.x * scale, -p.z * scale, p.y * scale);
+            let sy = screenY(p.x * scale, -p.z * scale, p.y * scale);
+            let d = dist(mouseX - width/2, mouseY - height/2, sx, sy);
+            if (d < closestDist) {
+                closestDist = d;
+                found = sat;
+            }
         }
-        function windowResized() {
-            resizeCanvas(windowWidth, innerHeight);
+    }
+    if (found) {
+        selectedSat = found;
+        document.getElementById('datalink').style.display = 'block';
+    }
+}
+
+function draw() {
+    background(1, 3, 6);
+    orbitControl();
+
+    let now = new Date();
+    document.getElementById('ts').innerText = "UTC: " + now.toISOString();
+    let gmst = satellite.gstime(now);
+    
+    // Terra
+    push();
+    rotateY(gmst); 
+    noStroke();
+    texture(earthTexture);
+    rotateY(PI); 
+    sphere(globeRadius, 48, 48);
+    pop();
+
+    // Satelliti
+    if (dataReady) {
+        let scale = globeRadius / 6371; 
+        beginShape(POINTS);
+        for (let sat of satellitesRecs) {
+            let pv = satellite.propagate(sat.rec, now);
+            let p = pv.position;
+            if (p) {
+                let alt = Math.sqrt(p.x**2 + p.y**2 + p.z**2) - 6371;
+                
+                // Evidenzia se selezionato
+                if (selectedSat && sat.name === selectedSat.name) {
+                    strokeWeight(8);
+                    stroke(255, 255, 255);
+                    updateDataPanel(sat, pv, gmst);
+                } else {
+                    strokeWeight(2.5);
+                    if (alt < 2000) stroke(0, 255, 150);      
+                    else if (alt < 20000) stroke(255, 200, 0); 
+                    else stroke(0, 150, 255);
+                }
+                vertex(p.x * scale, -p.z * scale, p.y * scale);
+            }
         }
+        endShape();
+    }
+}
 
-        
+function updateDataPanel(sat, pv, gmst) {
+    let p = pv.position;
+    let v = pv.velocity;
+    
+    // Conversione Coordinate Geografiche
+    let positionGd = satellite.eciToGeodetic(p, gmst);
+    let lat = satellite.degreesLat(positionGd.latitude);
+    let lon = satellite.degreesLong(positionGd.longitude);
+    let alt = positionGd.height;
+    let vel = Math.sqrt(v.x**2 + v.y**2 + v.z**2);
 
-    </script>
+    document.getElementById('sat-name').innerText = sat.name;
+    document.getElementById('sat-alt').innerText = alt.toFixed(1);
+    document.getElementById('sat-vel').innerText = vel.toFixed(2);
+    document.getElementById('sat-lat').innerText = lat.toFixed(2);
+    document.getElementById('sat-lon').innerText = lon.toFixed(2);
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+</script>
+
 </body>
 </html>
