@@ -1,26 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ES01_ISS</title>
+    <title>ISS Tracker 3D - High Detail Radar</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+    <style>
+        body { margin: 0; padding: 0; overflow: hidden; background-color: #000; }
+        #info {
+            position: absolute; top: 20px; left: 20px;
+            color: #0f0; font-family: monospace;
+            background: rgba(0, 0, 0, 0.9); padding: 15px;
+            border: 1px solid #0f0; z-index: 100;
+        }
+    </style>
 </head>
 <body>
 
-    <script>
-        const API_URL = 'http://api.open-notify.org/iss-now.json'
-       
-        fetch(API_URL)
-            .then(r => r.json())
-            .then(data => {
-                const { latitude, longitude } = data.iss_position;
+<div id="info">
+    <div style="font-weight: bold; color: #fff;">ISS LIVE TRACKER</div>
+    <div id="coords">CONNESSIONE...</div>
+    <div id="ts" style="font-size: 0.7em; color: #888;"></div>
+</div>
 
-                document.body.innerHTML = `<h1>Posizione attuale della ISS:</h1>`;
-                document.body.innerHTML += `Latitudine: ${latitude} <br>`;
-                document.body.innerHTML += `Longitudine: ${longitude} <br>`;
-            })
+<script>
+let globeRadius = 200;
+let issLat = 0, issLon = 0;
+let dataReady = false;
+let earthTexture;
+let countryData;
 
-    </script>
+const ISS_API = "http://api.open-notify.org/iss-now.json";
+const PROXY = "https://api.allorigins.win/get?url=";
+// GeoJSON con i confini dettagliati dei paesi
+const MAP_DATA = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson";
+
+function preload() {
+    // Carichiamo i dati dei confini reali
+    countryData = loadJSON(MAP_DATA);
+}
+
+function setup() {
+    createCanvas(windowWidth, windowHeight, WEBGL);
+    
+    // Creazione della texture dettagliata
+    earthTexture = createGraphics(1600, 800);
+    earthTexture.background(5, 15, 40); // Blu scuro radar
+    
+    // Disegno dei paesi dal GeoJSON
+    earthTexture.stroke(0, 180, 255, 200); // Confini azzurro brillante
+    earthTexture.fill(10, 30, 70); // Riempimento terra
+    earthTexture.strokeWeight(1);
+
+    if (countryData && countryData.features) {
+        countryData.features.forEach(feature => {
+            let geometry = feature.geometry;
+            if (geometry.type === "Polygon") {
+                drawPolygon(geometry.coordinates[0]);
+            } else if (geometry.type === "MultiPolygon") {
+                geometry.coordinates.forEach(poly => drawPolygon(poly[0]));
+            }
+        });
+    }
+
+    // Aggiunta griglia radar sopra i paesi
+    earthTexture.stroke(0, 180, 255, 60);
+    for (let i = 0; i <= 1600; i += 40) earthTexture.line(i, 0, i, 800);
+    for (let j = 0; j <= 800; j += 40) earthTexture.line(0, j, 1600, j);
+
+    updateISS();
+    setInterval(updateISS, 1000);
+}
+
+// Funzione di supporto per mappare le coordinate geografiche sulla texture
+function drawPolygon(coords) {
+    earthTexture.beginShape();
+    coords.forEach(pt => {
+        let x = map(pt[0], -180, 180, 0, 1600);
+        let y = map(pt[1], 90, -90, 0, 800);
+        earthTexture.vertex(x, y);
+    });
+    earthTexture.endShape(CLOSE);
+}
+
+function draw() {
+    background(0);
+    orbitControl();
+
+    ambientLight(180);
+    pointLight(255, 255, 255, 500, -500, 500);
+
+    push();
+    texture(earthTexture);
+    noStroke();
+    sphere(globeRadius);
+    pop();
+
+    if (dataReady) {
+        drawISS();
+    }
+}
+
+async function updateISS() {
+    try {
+        const timestamp = new Date().getTime();
+        const urlWithCacheBuster = ISS_API + "?t=" + timestamp;
+        const response = await fetch(PROXY + encodeURIComponent(urlWithCacheBuster));
+        const wrapper = await response.json();
+        const data = JSON.parse(wrapper.contents);
+        
+        issLat = parseFloat(data.iss_position.latitude);
+        issLon = parseFloat(data.iss_position.longitude);
+        dataReady = true;
+        
+        document.getElementById('coords').innerHTML = 
+            `LAT: ${issLat.toFixed(4)}<br>LON: ${issLon.toFixed(4)}`;
+        document.getElementById('ts').innerText = "Ultimo agg: " + new Date().toLocaleTimeString();
+    } catch (e) {
+        console.error("Errore fetch:", e);
+    }
+}
+
+function drawISS() {
+    let lat = radians(issLat);
+    let lon = radians(issLon);
+    let r = globeRadius + 15;
+
+    // Matematica sincronizzata con la proiezione della mappa
+    let x = r * cos(lat) * sin(lon);
+    let y = -r * sin(lat);
+    let z = r * cos(lat) * cos(lon);
+
+    push();
+    translate(x, y, z);
+    fill(255, 255, 0);
+    noStroke();
+    sphere(6);
+    
+    let s = sin(frameCount * 0.2) * 8;
+    fill(255, 255, 0, 100);
+    sphere(8 + s);
+    pop();
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+</script>
 
 </body>
 </html>
