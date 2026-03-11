@@ -8,7 +8,7 @@ function preload(){  //ci assicura che l'immagine sia caricata prima di eseguire
 
 
 function setup(){
-createCanvas(400, 400, WEBGL)
+createCanvas(900, 900, WEBGL)
 piastrella.loadPixels() //carica i pixel dell'immagine in modo da poter accedere ai loro valori
 }
 
