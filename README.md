@@ -11,8 +11,8 @@ https://carladegennaro.github.io/interaction_design/es02_p5js/
 https://carladegennaro.github.io/interaction_design/es03_moon_surface/
 
 ### Idea progetto 1
-Nel mio progetto, in occasione del 70° anniversario della NASA, voglio esplorare come la Terra, vista dallo spazio, sveli le tracce del cambiamento climatico. In particolare, mi focalizzo sulla regione artica, un'area frequentemente monitorata dalla NASA, in cui i cambiamenti sono visibili e misurabili.
+Il mio progetto, in occasione del 70° anniversario della NASA, mira a utilizzare il caso dello scioglimento dei ghiacci nell’Artico come esempio per raccontare il ruolo degli strumenti sviluppati dalla NASA. L’obiettivo è evidenziare come diversi satelliti permettano di osservare la Terra da prospettive differenti, trasformando dati complessi in informazioni comprensibili.
 
-Il mio target è un pubblico generalista, curioso dello spazio e delle dinamiche ambientali. Attraverso immagini satellitari reali della NASA e dati numerici, mostrerò la riduzione dei ghiacci artici.
+L’esperienza è progettata per essere accessibile anche a utenti senza conoscenze scientifiche specifiche, utilizzando visualizzazioni intuitive e interazioni che guidano progressivamente alla comprensione del fenomeno.
 
-Per visualizzare questi dati, utilizzerò un’interfaccia web interattiva, basata su immagini storiche. Questo percorso guiderà lo spettatore attraverso il tempo, rendendo visibili i grandi numeri del cambiamento climatico, in modo chiaro e coinvolgente.
+L’esperienza si sviluppa come una pagina web interattiva ambientata nello spazio. L’utente osserva la Terra dall’orbita e può esplorare diversi satelliti utilizzati per l’osservazione del pianeta, come Landsat, MODIS e ICESat. Ogni satellite rappresenta uno strumento scientifico specifico e permette di visualizzare diversi tipi di dati raccolti nel tempo. Per ognuno di esso ci sono informazioni storiche e tecniche ma anche uan visualizzazione dell'artico secondo la loro funzionalità.
