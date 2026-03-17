@@ -1,10 +1,10 @@
 
-const formiche = [] //formiche è un arrray che forniche 10000 oggetti
+const formiche = [] //formiche è un arrray che fornisce 10000 oggetti
 let mappa
 
 
 function preload() {
-    mappa = loadImage('mappa.png')
+    mappa = loadImage('mappa.jpg')
 }
 
 function setup() {
@@ -12,15 +12,14 @@ function setup() {
 
     for (let j = 0; j < mappa.height; j++) {
         for (let i = 0; i < mappa.width; i++) {
-            const colore = mappa.get(i, j)
+            const col = mappa.get(i, j)
         formiche.push ({
             x : i,
             y : j,
-            colore: colore,
+            colore: mappa.get(i, j),
             
             dim: 1
         })
-        rcolore[i] = formiche[i].colore
         }
 }
     
