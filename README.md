@@ -16,3 +16,5 @@ Il mio progetto, in occasione del 70° anniversario della NASA, mira a utilizzar
 L’esperienza è progettata per essere accessibile anche a utenti senza conoscenze scientifiche specifiche, utilizzando visualizzazioni intuitive e interazioni che guidano progressivamente alla comprensione del fenomeno.
 
 L’esperienza si sviluppa come una pagina web interattiva ambientata nello spazio. L’utente osserva la Terra dall’orbita e può esplorare diversi satelliti utilizzati per l’osservazione del pianeta, come Landsat, MODIS e ICESat. Ogni satellite rappresenta uno strumento scientifico specifico e permette di visualizzare diversi tipi di dati raccolti nel tempo. Per ognuno di esso ci sono informazioni storiche e tecniche ma anche una visualizzazione dell'artico secondo la loro funzionalità.
+
+### Prototipo progetto 1
