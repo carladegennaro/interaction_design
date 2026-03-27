@@ -28,38 +28,19 @@
         #lang-btn { position: fixed; top: 40px; right: 60px; z-index: 50; }
         #about-btn { position: fixed; top: 40px; left: 60px; z-index: 50; }
 
-        #about-panel { 
-            position: fixed; 
-            top: 90px; 
-            left: 60px; 
-            width: 300px; 
-            background: rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(15px); 
-            padding: 20px; 
-            border-left: 2px solid #fff; 
-            display: none; 
-            z-index: 60; 
-        }
+        #about-panel { position: fixed; top: 90px; left: 60px; width: 300px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 20px; border-left: 2px solid #fff; display: none; z-index: 60; }
         #about-panel.active { display: block; }
-        #about-panel h3 { margin-top: 0; text-transform: uppercase; font-size: 16px; font-weight: bold; letter-spacing: 1px; }
-        #about-panel p { font-size: 12px; line-height: 1.5; opacity: 0.7; margin-bottom: 0; }
 
-        #detail-page {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 100; display: none; padding: 100px 60px;
-            box-sizing: border-box; overflow-y: auto;
-        }
+        #detail-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; display: none; padding: 100px 60px; box-sizing: border-box; overflow-y: auto; }
         #detail-page.active { display: block; }
+        .detail-layout { display: flex; flex-direction: column; align-items: flex-start; gap: 40px; }
+        #earth-3d-container { width: 100%; height: 400px; display: flex; justify-content: center; align-items: center; }
         
-        .detail-layout { display: flex; flex-direction: row; justify-content: space-between; gap: 40px; align-items: flex-start; }
-        .detail-text { flex: 1; max-width: 600px; padding-bottom: 200px; }
-        .detail-text p { font-size: 16px; font-weight: 400; line-height: 1.8; opacity: 0.8; margin-bottom: 30px; }
-        
-        #earth-3d-container { 
-            position: fixed; right: 60px; top: 50%; transform: translateY(-50%); width: 500px; height: 500px;
-            display: flex; justify-content: center; align-items: center;
-        }
-        
+        /* Detail Page Layout Improvements */
+        .detail-layout { flex-direction: row; align-items: flex-start; }
+        .detail-text { flex: 1; max-width: 50%; }
+        #earth-3d-container { flex: 1; height: 400px; }
+
         .back-btn { position: fixed; top: 40px; right: 60px; z-index: 105; }
     </style>
 </head>
@@ -70,34 +51,19 @@
 
 <div id="about-panel">
     <h3>Eyes on Earth</h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+    <p>Monitoraggio satellitare globale per lo studio dei cambiamenti climatici.</p>
 </div>
 
 <div id="scroll-container">
-    <div class="section">
-        <div id="header">
-            <h1 id="main-title">Eyes on<br>Earth</h1>
-            <p class="subtitle" id="main-subtitle">Are satellites essential for monitoring climate change?</p>
-        </div>
-    </div>
-    <div id="panel-container">
-        <div id="info-panel" class="info-panel">
-            <h2 id="sat-name"></h2>
-            <p id="sat-desc"></p>
-            <button class="read-more-btn" onclick="openDetails()">READ MORE</button>
-        </div>
-    </div>
+    <div class="section"><div id="header"><h1 id="main-title">Eyes on<br>Earth</h1><p class="subtitle" id="main-subtitle">Are satellites essential for monitoring climate change?</p></div></div>
+    <div id="info-panel" class="info-panel"><h2 id="sat-name"></h2><p id="sat-desc"></p><button class="read-more-btn" onclick="openDetails()">READ MORE</button></div>
 </div>
 
 <div id="detail-page">
     <button class="back-btn" onclick="closeDetails()">BACK</button>
     <h1 id="detail-title" style="margin-bottom: 50px;">SATELLITE NAME</h1>
-    
     <div class="detail-layout">
-        <div class="detail-text">
-            <p><strong>Analisi Tecnica:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </div>
+        <div class="detail-text"><p><strong>Analisi Tecnica:</strong> Ruota il modello per osservare i dettagli della missione.</p></div>
         <div id="earth-3d-container"></div>
     </div>
 </div>
@@ -107,146 +73,62 @@
     let satellites = [];
     let stars = [];
     let camPos, targetCamPos;
-    let lookAtPos, targetLookAtPos;
     let selectedSatIndex = -1;
-    let isManualClick = false;
     let earthTexture, detailSketch, earthImg;
+    let oco2Model, sentinelModel, icesatModel;
     
     let currentLang = 'en';
     const translations = {
-        en: {
-            subtitle: "Are satellites essential for monitoring climate change?",
-            readMore: "READ MORE",
-            back: "BACK",
-            sat0: "Monitors the global biosphere every 24 hours.",
-            sat1: "High-resolution imagery since 1972.",
-            sat2: "Measures polar ice thickness."
-        },
-        it: {
-            subtitle: "I satelliti sono essenziali per monitorare il cambiamento climatico?",
-            readMore: "LEGGI TUTTO",
-            back: "INDIETRO",
-            sat0: "Monitora la biosfera globale ogni 24 ore.",
-            sat1: "Immagini ad alta risoluzione dal 1972.",
-            sat2: "Misura lo spessore dei ghiacci polari."
-        }
+        en: { subtitle: "Are satellites essential for monitoring climate change?", readMore: "READ MORE", back: "BACK", sat0: "OCO-2: Maps global CO2 levels.", sat1: "SENTINEL-6: Sea level monitoring.", sat2: "ICESAT-2: Measures polar ice thickness." },
+        it: { subtitle: "I satelliti sono essenziali per il clima?", readMore: "LEGGI TUTTO", back: "INDIETRO", sat0: "OCO-2: Mappa i livelli di CO2.", sat1: "SENTINEL-6: Monitoraggio livello mare.", sat2: "ICESAT-2: Misura il ghiaccio polare." }
     };
-
-    function toggleLang() {
-        currentLang = currentLang === 'en' ? 'it' : 'en';
-        document.getElementById('main-subtitle').innerText = translations[currentLang].subtitle;
-        document.querySelectorAll('.read-more-btn').forEach(b => b.innerText = translations[currentLang].readMore);
-        document.querySelectorAll('.back-btn').forEach(b => b.innerText = translations[currentLang].back);
-        
-        satellites[0].desc = translations[currentLang].sat0;
-        satellites[1].desc = translations[currentLang].sat1;
-        satellites[2].desc = translations[currentLang].sat2;
-    }
-
-    function toggleAbout() {
-        document.getElementById('about-panel').classList.toggle('active');
-    }
 
     function preload() {
         earthImg = loadImage('earth albedo.jpg');
+        oco2Model = loadModel('Orbiting Carbon Observatory (OCO) 2.obj', true);
+        sentinelModel = loadModel('Jason Continuity of Service (Sentinel-6).obj', true);
+        icesatModel = loadModel('Ice, Clouds, and Land Elevation Satellite-2 (ICESat-2) (A).obj', true);
     }
 
     function createHighDetailTexture(p) {
         let tex = p.createGraphics(2048, 1024);
-        if (earthImg) {
-            tex.image(earthImg, 0, 0, 2048, 1024);
-        } else {
-            tex.background(5, 15, 40);
-        }
+        if (earthImg) tex.image(earthImg, 0, 0, 2048, 1024);
+        else tex.background(5, 15, 40);
         return tex;
     }
-
-    function openDetails() {
-        document.getElementById('detail-title').innerText = satellites[selectedSatIndex].name;
-        document.getElementById('detail-page').classList.add('active');
-        document.getElementById('lang-btn').style.display = 'none';
-        document.getElementById('about-btn').style.display = 'none';
-        document.getElementById('about-panel').classList.remove('active');
-        if (!detailSketch) detailSketch = new p5(detailEarthSketch, 'earth-3d-container');
-    }
-
-    function closeDetails() { 
-        document.getElementById('detail-page').classList.remove('active'); 
-        document.getElementById('lang-btn').style.display = 'block';
-        document.getElementById('about-btn').style.display = 'block';
-    }
-
-    const detailEarthSketch = (p) => {
-        let detailTex;
-        p.setup = () => {
-            p.createCanvas(500, 500, p.WEBGL);
-            detailTex = createHighDetailTexture(p);
-        };
-        p.draw = () => {
-            p.background(0);
-            
-            // Stelle nella pagina di dettaglio
-            p.push();
-            p.stroke(255);
-            p.strokeWeight(2);
-            for (let s of stars) p.point(s.x/4, s.y/4, s.z/4);
-            p.pop();
-
-            let detailDiv = document.getElementById('detail-page');
-            let scrollFrac = (detailDiv.scrollTop / (detailDiv.scrollHeight - detailDiv.clientHeight)) * p.PI;
-            p.ambientLight(200); p.pointLight(255, 255, 255, 500, -500, 500);
-            p.push(); p.rotateY(p.PI + scrollFrac); p.texture(detailTex); p.noStroke(); p.sphere(180); p.pop();
-        };
-    };
 
     function setup() {
         createCanvas(windowWidth, windowHeight, WEBGL);
         earthTexture = createHighDetailTexture(this);
-        
         camPos = createVector(0, 0, 950);
         targetCamPos = createVector(0, 0, 950);
-        lookAtPos = createVector(0, 0, 0);
-        targetLookAtPos = createVector(0, 0, 0);
-
-        for (let i = 0; i < 500; i++) {
-            stars.push({x: random(-2000, 2000), y: random(-2000, 2000), z: random(-2000, 2000)});
-        }
+        for (let i = 0; i < 500; i++) stars.push({x: random(-2000, 2000), y: random(-2000, 2000), z: random(-2000, 2000)});
 
         satellites = [
-            { name: "MODIS (Terra)", x: 380, y: -80, z: 100, color: [0, 255, 200], desc: translations[currentLang].sat0 },
-            { name: "LANDSAT 9", x: -400, y: 120, z: -150, color: [255, 220, 0], desc: translations[currentLang].sat1 },
-            { name: "ICESAT-2", x: 150, y: -350, z: 250, color: [0, 160, 255], desc: translations[currentLang].sat2 }
+            { name: "OCO-2", x: 220, y: -50, z: 50, color: [255, 50, 0], desc: translations[currentLang].sat0, model: oco2Model, filter: [255, 150, 100] },
+            { name: "SENTINEL-6", x: -240, y: 30, z: -80, color: [0, 255, 100], desc: translations[currentLang].sat1, model: sentinelModel, filter: [100, 255, 150] },
+            { name: "ICESAT-2", x: 60, y: -230, z: 30, color: [0, 150, 255], desc: translations[currentLang].sat2, model: icesatModel, filter: [150, 200, 255] }
         ];
-
-        window.addEventListener('scroll', () => { 
-            isManualClick = false; 
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-                window.scrollTo(0, 0);
-            }
-        });
-    }
-
-    function drawStars() {
-        push(); stroke(255); strokeWeight(2);
-        for (let s of stars) point(s.x, s.y, s.z);
-        pop();
     }
 
     function draw() {
+        if (window.scrollY >= document.body.scrollHeight - windowHeight - 5) window.scrollTo(0, 0);
         background(0);
-        drawStars();
+        
+        // Stelle
+        push(); stroke(255); strokeWeight(2);
+        for (let s of stars) point(s.x, s.y, s.z);
+        pop();
 
         let scrollFraction = window.scrollY / (document.body.scrollHeight - windowHeight);
-        let header = document.getElementById('header');
-        let panel = document.getElementById('info-panel');
-
         if (scrollFraction < 0.1) {
             selectedSatIndex = -1;
             targetCamPos.set(0, 0, 950);
-            targetLookAtPos.set(0, 0, 0);
-            header.classList.remove('hidden'); panel.classList.remove('visible');
+            document.getElementById('info-panel').classList.remove('visible');
+            document.getElementById('header').classList.remove('hidden');
         } else {
-            header.classList.add('hidden'); panel.classList.add('visible');
+            document.getElementById('info-panel').classList.add('visible');
+            document.getElementById('header').classList.add('hidden');
             if (scrollFraction < 0.4) selectedSatIndex = 0;
             else if (scrollFraction < 0.7) selectedSatIndex = 1;
             else selectedSatIndex = 2;
@@ -254,39 +136,63 @@
             let s = satellites[selectedSatIndex];
             document.getElementById('sat-name').innerText = s.name;
             document.getElementById('sat-desc').innerText = s.desc;
-
-            if (selectedSatIndex === 2) {
-                targetCamPos.set(0, -700, 200); 
-                targetLookAtPos.set(0, 0, 0);
-            } else {
-                targetCamPos.set(0, 0, 650);
-                targetLookAtPos.set(s.x + 100, s.y, s.z);
-            }
+            
+            // ZOOM SUL SATELLITE (Punto di osservazione ravvicinato)
+            targetCamPos.set(s.x * 1.5, s.y * 1.5, s.z * 1.5 + 50);
         }
 
         camPos.lerp(targetCamPos, 0.05);
-        lookAtPos.lerp(targetLookAtPos, 0.05);
-        camera(camPos.x, camPos.y, camPos.z, lookAtPos.x, lookAtPos.y, lookAtPos.z, 0, 1, 0);
+        camera(camPos.x, camPos.y, camPos.z, 0, 0, 0, 0, 1, 0);
+        ambientLight(150); pointLight(255, 255, 255, 500, -500, 500);
 
-        ambientLight(200); pointLight(255, 255, 255, 500, -500, 500);
-        push(); rotateY(angle); texture(earthTexture); noStroke(); sphere(200); pop();
+        // TERRA CON FILTRO SATELLITE
+        push(); rotateY(angle); 
+        if (selectedSatIndex !== -1) tint(satellites[selectedSatIndex].filter);
+        texture(earthTexture); noStroke(); sphere(200); pop();
 
+        // SATELLITI IN PROPORZIONE (Molto piccoli)
         for (let i = 0; i < satellites.length; i++) {
             let s = satellites[i];
             push(); translate(s.x, s.y, s.z); rotateY(angle * 2);
-            drawSatellite(12, (i === selectedSatIndex ? 255 : s.color));
+            fill(s.color); noStroke(); rotateX(PI);
+            // Scala ridotta per realismo proporzionale
+            scale(0.1); // Unified scale for all satellites, made bigger
+            model(s.model);
             pop();
         }
         angle += 0.002;
     }
-    
-    function drawSatellite(size, col) {
-        fill(col); box(size * 1.5, size, size); 
-        push(); fill(50, 80, 200); translate(size * 1.8, 0, 0); box(size * 2, size * 0.1, size); 
-        translate(-size * 3.6, 0, 0); box(size * 2, size * 0.1, size); pop();
+
+    function openDetails() {
+        document.getElementById('detail-title').innerText = satellites[selectedSatIndex].name;
+        document.getElementById('detail-page').classList.add('active');
+        if (detailSketch) detailSketch.remove();
+        detailSketch = new p5(detailSatelliteSketch, 'earth-3d-container');
     }
 
-    function windowResized() { resizeCanvas(windowWidth, windowHeight); }
+    function closeDetails() { document.getElementById('detail-page').classList.remove('active'); }
+
+    const detailSatelliteSketch = (p) => {
+        p.setup = () => { p.createCanvas(400, 300, p.WEBGL); };
+        p.draw = () => {
+            p.background(0);
+            p.orbitControl(); 
+            p.ambientLight(200); p.pointLight(255, 255, 255, 200, -200, 200);
+            p.push();
+            p.rotateX(p.PI);
+            p.fill(satellites[selectedSatIndex].color);
+            p.noStroke();
+            // Scala per ispezione interattiva
+            let d_scale = (selectedSatIndex === 2) ? 100 : 3;
+            if (selectedSatIndex === 1) d_scale = 2.5;
+            p.scale(d_scale);
+            p.model(satellites[selectedSatIndex].model);
+            p.pop();
+        };
+    };
+
+    function toggleLang() { currentLang = currentLang === 'en' ? 'it' : 'en'; }
+    function toggleAbout() { document.getElementById('about-panel').classList.toggle('active'); }
 </script>
 </body>
 </html>
