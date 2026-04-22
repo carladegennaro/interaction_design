@@ -6,7 +6,7 @@ Docenti: A. Gysin, G. Profeta
 
 Progetto 1
 
-[# **Eyes on earth**](https://carladegennaro.github.io/interaction_design/progetto_1.2/)
+# [**Eyes on earth**](https://carladegennaro.github.io/interaction_design/progetto_1.2/)
 
 Autore: Carla De Gennaro
 
