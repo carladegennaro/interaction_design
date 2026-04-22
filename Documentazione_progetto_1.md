@@ -1,22 +1,36 @@
-# interaction_design
+SUPSI 2026
+Corso d’interaction design, CV429.01
+Docenti: A. Gysin, G. Profeta
+
+Progetto 1: La conquista dello spazio
+###Eyes on earth
+Autore: Carla De Gennaro
+Eyes on earth
+
+##Introduzione al tema
+In occasione del settantesimo anniversario della NASA, fondata nel 1958 , questo progetto esplora gli archivi digitali dell’agenzia per divulgare l'importanza della tecnologia aerospaziale nel monitoraggio della salute del nostro pianeta. Attraverso la navigazione tra cinque satelliti chiave, scoprirai come la conquista dello spazio sia diventata lo strumento fondamentale per comprendere i cambiamenti globali. Inizia il tuo viaggio per vedere la Terra come non l'hai mai vista prima.
+
+##Riferimenti progettuali
+
+##Design dell’interfaccia e modalità di interazione
+Il progetto adotta un approccio minimalista e immersivo, ispirato ai terminali delle agenzie aerospaziali. Il layout è strutturato in tre livelli logici:
+#Landing Page
+Una schermata di benvenuto sfocata che introduce il contesto storico (70° anniversario NASA). L'interazione è limitata al tasto "Esplora", che funge da trigger per attivare l'ambiente interattivo.
+#Navigazione Orbitale
+Una rappresentazione 3D della Terra in un vuoto cosmico.
+- Interazione spaziale: l'utente può ruotare il pianeta tramite drag del mouse e zoomare.
+- Feedback visivo: passando sopra i nomi dei satelliti nel menu laterale, appaiono marker bianchi pulsanti sulla Terra e un'anteprima tecnica (HUD) con i loghi delle agenzie (NASA, ESA, NOAA).
+#Sistema di Dettaglio
+Cliccando su un satellite, l'interfaccia si trasforma in un cruscotto analitico diviso in tre capitoli:
+- Scheda Tecnica (visualizzazione di un modello 3D interattivo del satellite e dati strutturali), utilità (accesso diretto a dati reali tramite preview di mappe satellitari (link esterni)) e come funziona (approfondimento scientifico con schemi e immagini reali delle missioni).
 
 
-### Esercizio ISS
-https://carladegennaro.github.io/interaction_design/es01_ISS/ 
 
-### Esercizio SATELLITI
-https://carladegennaro.github.io/interaction_design/es02_p5js/
+##Tecnologia usata
+- Dati locali e Loghi: le informazioni tecniche e i riferimenti alle agenzie sono archiviati in oggetti JavaScript locali (satellites, chapterData), permettendo un caricamento istantaneo senza dipendere da database esterni.
+- Integrazione Iframe: visualizzazione dinamica di applicazioni NASA pre-esistenti per la consultazione dei "Vital Signs" del pianeta.
 
-### Esercizio MOON SURFACE
-https://carladegennaro.github.io/interaction_design/es03_moon_surface/
 
-### Idea progetto 1
-In occasione del programma di celebrazioni per il settantesimo anniversario della NASA (1958-2028), questo progetto esplora come la "conquista dello spazio" sia diventata un motore tecnologico fondamentale per comprendere e monitorare la salute del nostro pianeta.
-L’obiettivo è evidenziare come diversi satelliti permettano di osservare la Terra da prospettive differenti, trasformando dati complessi in informazioni comprensibili.
+##Target e contesto d’uso
+Il progetto si rivolge a un pubblico generalista, ovvero persone non necessariamente esperte di ingegneria aerospaziale, ma accomunate da un forte interesse per l’astronomia, le tecnologie NASA e le tematiche ambientali.
 
-Il target di questo progetto è un pubblico generalista, composto principalmente da curiosi degli strumenti spaziali e dei cambiamenti climatici.
-
-L’esperienza si sviluppa come una pagina web interattiva ambientata nello spazio. L’utente osserva la Terra dall’orbita e può esplorare diversi satelliti utilizzati per l’osservazione del pianeta, come OCO-2, SENTINEL 6, ICESat, SUOMI NPP e AQUA. Ogni satellite rappresenta uno strumento scientifico specifico e permette di visualizzare diversi tipi di dati raccolti nel tempo. Per ognuno di esso ci sono informazioni storiche e tecniche ma anche una visualizzazione della terra secondo la loro funzionalità.
-
-### Prototipo progetto 1
-https://carladegennaro.github.io/interaction_design/progetto_1.2/
