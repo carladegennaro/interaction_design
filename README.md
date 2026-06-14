@@ -4,7 +4,7 @@ Docenti: A. Gysin, G. Profeta
 
 Progetto 1: La conquista dello spazio
 
-# Titolo progetto
+# Eyes on Earth
 Autore: Carla De Gennraro \
 [Eyes on Earth](https://carladegennaro.github.io/interaction_design/progetto_1.2/)
 
