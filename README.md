@@ -1,27 +1,65 @@
-# interaction_design
+¨SUPSI 2026  
+Corso d’interaction design, CV429.01  
+Docenti: A. Gysin, G. Profeta  
+
+Progetto 1: La conquista dello spazio
+
+# Titolo progetto
+Autore: Carla De Gennraro \
+[Eyes on Earth](https://carladegennaro.github.io/interaction_design/progetto_1.2/)
 
 
-### Esercizio ISS
-https://carladegennaro.github.io/interaction_design/es01_ISS/ 
+## Introduzione e tema
+In occasione del settantesimo anniversario della NASA, fondata nel 1958 , questo progetto esplora gli archivi digitali dell’agenzia per divulgare l'importanza della tecnologia aerospaziale nel monitoraggio della salute del nostro pianeta. Attraverso la navigazione tra cinque satelliti chiave, scoprirai come la conquista dello spazio sia diventata lo strumento fondamentale per comprendere i cambiamenti globali. Inizia il tuo viaggio per vedere la Terra come non l'hai mai vista prima.
 
-### Esercizio SATELLITI
-https://carladegennaro.github.io/interaction_design/es02_p5js/
 
-### Esercizio MOON SURFACE
-https://carladegennaro.github.io/interaction_design/es03_moon_surface/
+## Riferimenti progettuali
+[https://www.anthropic.com/features/claude-on-mars](url)
 
-### Intensioni di progetto 1
-In occasione del programma di celebrazioni per il settantesimo anniversario della NASA (1958-2028), questo progetto esplora come la "conquista dello spazio" sia diventata un motore tecnologico fondamentale per comprendere e monitorare la salute del nostro pianeta.
-L’obiettivo è evidenziare come diversi satelliti permettano di osservare la Terra da prospettive differenti, trasformando dati complessi in informazioni comprensibili.
 
-Il target di questo progetto è un pubblico generalista, composto principalmente da curiosi degli strumenti spaziali e dei cambiamenti climatici.
+## Design dell’interfaccia e modalità di interazione
+Il progetto adotta un approccio minimalista e immersivo, ispirato ai terminali delle agenzie aerospaziali. Il layout è strutturato in tre livelli logici:
 
-L’esperienza si sviluppa come una pagina web interattiva ambientata nello spazio. L’utente osserva la Terra dall’orbita e può esplorare diversi satelliti utilizzati per l’osservazione del pianeta, come OCO-2, SENTINEL 6, ICESat, SUOMI NPP e AQUA. Ogni satellite rappresenta uno strumento scientifico specifico e permette di visualizzare diversi tipi di dati raccolti nel tempo. Per ognuno di esso ci sono informazioni storiche e tecniche ma anche una visualizzazione della terra secondo la loro funzionalità.
+Landing Page. Una schermata di benvenuto sfocata che introduce il contesto storico (70° anniversario NASA). L'interazione è limitata al tasto "Esplora", che funge da trigger per attivare l'ambiente interattivo.
 
-### Prototipo progetto 1
-https://carladegennaro.github.io/interaction_design/progetto_1.2/
+Navigazione Orbitale. Una rappresentazione 3D della Terra in un vuoto cosmico.
+- Interazione spaziale: l'utente può ruotare il pianeta tramite drag del mouse e zoomare.
+- Feedback visivo: passando sopra i nomi dei satelliti nel menu laterale, appaiono marker bianchi pulsanti sulla Terra e un'anteprima tecnica (HUD) con i loghi delle agenzie (NASA, ESA, NOAA).
 
-### Intensioni di progetto 2
-L'obiettivo è trasformare un archivio accademico in una piattaforma di divulgazione scientifica interattiva. Non si tratta di decorare una lista di link, ma di progettare un'interfaccia che nobili i 13 progetti "La conquista dello spazio", rendendoli strumenti di apprendimento immediati per l'utente. La pagina deve agire come un ponte tra il rigore storico della NASA e la sperimentazione contemporanea, facilitando la consultazione dei dati e delle fonti bibliografiche in modo fluido e trasparente.  
-Il messaggio centrale è la continuità dell’esplorazione: i 70 anni della NASA non sono un traguardo statico, ma un processo evolutivo inarrestabile. Attraverso il concetto "Un piccolo passo per un uomo, un grande balzo per l'umanità", la pagina comunica che ogni singolo esperimento presentato è un tassello fondamentale di una conoscenza collettiva più ampia. Il design deve trasmettere autorevolezza, precisione e quella visione pionieristica che definisce l'identità dell'agenzia spaziale.  
-Il target è composto da appassionati di spazio, ricercatori e curiosi che navigano il web alla ricerca di contenuti di valore sulla storia aerospaziale.
+Sistema di Dettaglio. Cliccando su un satellite, l'interfaccia si trasforma in un cruscotto analitico diviso in tre capitoli:
+- Scheda Tecnica (visualizzazione di un modello 3D interattivo del satellite e dati strutturali), utilità (accesso diretto a dati reali tramite preview di mappe satellitari (link esterni)) e come funziona (approfondimento scientifico con schemi e immagini reali delle missioni).
+
+<img width="1236" height="1236" alt="carla1" src="earth-albedo.jpg" /> 
+https://github.com/user-attachments/assets/d6f86ada-3f9a-4988-9ac8-b81028d84b1f
+
+
+## Tecnologia usata
+- Dati locali e Loghi: le informazioni tecniche e i riferimenti alle agenzie sono archiviati in oggetti JavaScript locali (satellites, chapterData), permettendo un caricamento istantaneo senza dipendere da database esterni.
+- Integrazione Iframe: visualizzazione dinamica di applicazioni NASA pre-esistenti per la consultazione dei "Vital Signs" del pianeta.
+
+
+```JavaScript
+const image = new Image();
+image.onload = () => {
+	gl.bindTexture(gl.TEXTURE_2D, texture);
+	gl.texImage2D(
+		gl.TEXTURE_2D,
+		level,
+		internalFormat,
+		srcFormat,
+		srcType,
+		image
+	);
+	if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+		gl.generateMipmap(gl.TEXTURE_2D);
+	} else {
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+	}
+};
+image.src = url;
+```
+
+## Target e contesto d’uso
+Il progetto si rivolge a un pubblico generalista, ovvero persone non necessariamente esperte di ingegneria aerospaziale, ma accomunate da un forte interesse per l’astronomia, le tecnologie NASA e le tematiche ambientali.
