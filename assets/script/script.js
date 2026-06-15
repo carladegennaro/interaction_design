@@ -70,6 +70,7 @@ function generateNav() {
     satellites.forEach((sat, i) => {
         const item = document.createElement('div');
         item.className = 'nav-item';
+        // MODIFICA: Agganciato l'hover del menu alla variabile globale hoveredIndex
         item.onmouseenter = () => { hoveredIndex = i; };
         item.onmouseleave = () => { hoveredIndex = -1; };
         item.innerHTML = `<button class="nav-btn" onclick="selectSatellite(${i})" id="btn-${i}">${sat.name}</button>
@@ -80,13 +81,42 @@ function generateNav() {
 
 function draw() {
     if (isDetailPage || isSourcesPage) return; background(0);
+    
+    // Gestione dell'hovering calcolato dinamicamente sui cerchi basandosi sulla rotazione corrente
+    if (isInteracting && !mouseIsPressed) {
+        let currentClosest = -1;
+        let clickRadius = 45;
+        for (let i = 0; i < satellites.length; i++) {
+            let p = getProjectedPosition(satellites[i].pos);
+            if (p.z > 0) { 
+                let d = dist(mouseX, mouseY, p.x, p.y);
+                if (d < clickRadius) { currentClosest = i; break; }
+            }
+        }
+        if (currentClosest !== -1) hoveredIndex = currentClosest;
+    }
+
+    // MODIFICA: Sincronizzazione visiva delle classi CSS dei bottoni nell'HTML in base all'hoveredIndex
+    document.querySelectorAll('.nav-btn').forEach((btn, idx) => {
+        if (idx === hoveredIndex) {
+            btn.classList.add('active');
+        } else if (idx !== selectedSatIndex) {
+            btn.classList.remove('active');
+        }
+    });
+
     if (isInteracting && mouseIsPressed && mouseX > 450) { rotY += (mouseX - pmouseX) * 0.005; rotX -= (mouseY - pmouseY) * 0.005; }
     camZ = lerp(camZ, targetCamZ, 0.08);
     lookAt.x = lerp(lookAt.x, targetLookAt.x, 0.08); lookAt.y = lerp(lookAt.y, targetLookAt.y, 0.08); lookAt.z = lerp(lookAt.z, targetLookAt.z, 0.08);
     camera(0, 0, camZ, lookAt.x, lookAt.y, lookAt.z, 0, 1, 0);
     ambientLight(150); pointLight(255, 255, 255, 0, 0, camZ);
     push(); stroke(255); strokeWeight(1.5); for (let s of stars) point(s.x, s.y, s.z); pop();
-    push(); rotateX(rotX); rotateY(rotY); push(); noStroke(); texture(earthImg); sphere(200); pop();
+    
+    push(); 
+    rotateX(rotX); 
+    rotateY(rotY); 
+    push(); noStroke(); texture(earthImg); sphere(200); pop();
+    
     for (let i = 0; i < satellites.length; i++) {
         let s = satellites[i]; let isHovered = (hoveredIndex === i);
         if (isHovered) { push(); noFill(); stroke(255, 50); let d = s.pos.mag(); let v1 = createVector(1, 0, 0); let v2 = s.pos.copy().normalize(); let axis = v1.cross(v2); let angle = acos(v1.dot(v2)); rotate(angle, axis); ellipse(0, 0, d * 2, d * 2); pop(); }
@@ -125,7 +155,13 @@ function createDetailModel(satIndex) {
 }
 
 function startExperience() { document.getElementById('page-0').classList.add('hidden'); document.getElementById('ui-layer').classList.add('active'); isInteracting = true; }
-function selectSatellite(index) { selectedSatIndex = index; document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active')); document.getElementById('btn-' + index).classList.add('active'); targetLookAt = satellites[index].pos.copy(); targetCamZ = 450; setTimeout(openDetails, 500); }
+
+function selectSatellite(index) { 
+    selectedSatIndex = index; 
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active')); 
+    document.getElementById('btn-' + index).classList.add('active'); 
+    setTimeout(openDetails, 500); 
+}
 
 function openDetails() { 
     isDetailPage = true; 
@@ -144,7 +180,11 @@ function nextSatellite() {
 }
 
 function closeDetails() { isDetailPage = false; if (detailP5) { detailP5.remove(); detailP5 = null; } document.getElementById('detail-page').classList.remove('active'); resetView(); }
-function resetView() { selectedSatIndex = -1; targetLookAt = createVector(0, 0, 0); targetCamZ = 1000; document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active')); }
+
+function resetView() { 
+    selectedSatIndex = -1; 
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active')); 
+}
 
 function openSources() { isSourcesPage = true; document.getElementById('sources-page').classList.add('active'); }
 function closeSources() { isSourcesPage = false; document.getElementById('sources-page').classList.remove('active'); }
@@ -186,25 +226,44 @@ function changeChapter(key, btn) {
 }
 
 function getProjectedPosition(pos) {
-    let v = pos.copy();
-    let y1 = v.y * cos(rotX) - v.z * sin(rotX);
-    let z1 = v.y * sin(rotX) + v.z * cos(rotX);
-    let x2 = v.x * cos(rotY) + z1 * sin(rotY);
-    let z2 = -v.x * sin(rotY) + z1 * cos(rotY);
-    let d = camZ + z2;
-    if (d < 1) return { x: -1000, y: -1000, z: z2 };
-    let sc = (height / 2.0) / tan(PI * 30.0 / 180.0) / d;
-    return { x: (x2 - (lookAt.x * cos(rotY))) * sc + width / 2, y: (y1 - lookAt.y) * sc + height / 2, z: z2 };
+    let x = pos.x;
+    let y = pos.y;
+    let z = pos.z;
+
+    let cosY = cos(rotY);
+    let sinY = sin(rotY);
+    let xRotY = x * cosY + z * sinY;
+    let zRotY = -x * sinY + z * cosY;
+
+    let cosX = cos(rotX);
+    let sinX = sin(rotX);
+    let yRotX = y * cosX - zRotY * sinX;
+    let zRotX = y * sinX + zRotY * cosX;
+
+    let distanceToCam = camZ - zRotX;
+    let fovFactor = (height / 2.0) / tan(PI * 30.0 / 180.0);
+    let scaleProject = fovFactor / distanceToCam;
+
+    return {
+        x: xRotY * scaleProject + width / 2,
+        y: yRotX * scaleProject + height / 2,
+        z: distanceToCam
+    };
 }
 
-function mousePressed() {
+function mouseClicked() {
     if (isDetailPage || isSourcesPage || !isInteracting) return;
-    let closest = -1; let clickRadius = 80;
+    let closest = -1;
+    let clickRadius = 45; 
+    
     for (let i = 0; i < satellites.length; i++) {
         let p = getProjectedPosition(satellites[i].pos);
-        if (p.z < 150) {
+        if (p.z > 0) { 
             let d = dist(mouseX, mouseY, p.x, p.y);
-            if (d < clickRadius) { closest = i; break; }
+            if (d < clickRadius) {
+                closest = i;
+                break;
+            }
         }
     }
     if (closest !== -1) selectSatellite(closest);
