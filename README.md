@@ -6,7 +6,7 @@ Progetto 1: La conquista dello spazio
 
 # Eyes on Earth
 Autore: Carla De Gennraro \
-[Eyes on Earth](https://carladegennaro.github.io/interaction_design/progetto_1.2/)
+[Eyes on Earth](https://carladegennaro.github.io/interaction_design/index.html)
 
 
 ## Introduzione e tema
