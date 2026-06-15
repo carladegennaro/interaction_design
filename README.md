@@ -10,8 +10,8 @@ Autore: Carla De Gennraro \
 
 
 ## Introduzione e tema
-In occasione del settantesimo anniversario della NASA, fondata nel 1958 , questo progetto esplora gli archivi digitali dell’agenzia per divulgare l'importanza della tecnologia aerospaziale nel monitoraggio della salute del nostro pianeta. Attraverso la navigazione tra cinque satelliti chiave, scoprirai come la conquista dello spazio sia diventata lo strumento fondamentale per comprendere i cambiamenti globali. Inizia il tuo viaggio per vedere la Terra come non l'hai mai vista prima.
-
+In occasione del programma di celebrazioni per il settantesimo anniversario della NASA (1958-2028), questo progetto esplora come la conquista dello spazio sia diventata un motore tecnologico fondamentale per comprendere e monitorare la salute del nostro pianeta.
+L’obiettivo è evidenziare come l'utilizzo di diversi satelliti permetta di osservare la Terra e i cambiamenti climatici.
 
 ## Riferimenti progettuali
 [https://www.anthropic.com/features/claude-on-mars](url)
