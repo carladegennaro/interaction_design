@@ -2,7 +2,7 @@ let earthImg, models = [], textures = [], stars = [], satellites = [];
 let isInteracting = false, isDetailPage = false, isSourcesPage = false;
 let rotX = 0, rotY = 180, camZ = 1000, targetCamZ = 1000;
 let lookAt, targetLookAt, selectedSatIndex = -1, hoveredIndex = -1;
-let detailP5 = null;
+let currentDetailSubPage = "about"; // Traccia la sotto-pagina attiva nei dettagli
 
 const labels = {
     agency: "Agency", launch: "Launch", mass: "Mass", orbit: "Orbit",
@@ -12,26 +12,31 @@ const labels = {
 
 const chapterData = {
     0: { 
+        nomeIntero: "Orbiting Carbon Observatory-2",
         storia: "The Orbiting Carbon Observatory-2 (OCO-2) is NASA's first mission dedicated to carbon dioxide.", 
         come: "Carbon dioxide (CO₂) is a critical component of the Earth system: although essential for life and for maintaining a habitable surface temperature, the anthropogenic increase in its concentrations is altering the planet's radiative balance. <br><br>The Earth system regulates CO₂ through the carbon cycle, divided into 'sources' (emissions from fossil fuels, decomposition, deforestation) and 'sinks' (oceanic and terrestrial). Currently, natural sinks absorb about 50% of the CO₂ emitted by human activities. <br><br>OCO-2 provides fundamental data by measuring Sun-Induced Fluorescence (SIF). Since SIF is directly proportional to photosynthetic activity, it acts as a real-time indicator of the gross primary productivity of ecosystems. This allows for monitoring seasonal growth cycles and detecting environmental stress before they become visible.", 
         perche: "The OCO-2 satellite uses three high-resolution grating spectrometers to determine the concentration of CO₂ in the atmosphere. These instruments do not directly measure the gas, but analyze the intensity of sunlight reflected from the Earth's surface after it has passed through the atmosphere. <br><br>The physical principle is based on molecular absorption: CO₂ and oxygen (O₂) molecules absorb specific wavelengths of light. The spectrometer breaks down the light into its color components, revealing dark absorption lines. The more CO₂ molecules present along the light path, the greater the energy absorbed in those specific frequencies. <br><br>OCO-2 observes three distinct spectral bands: the Oxygen A band (0.76 µm) to calculate atmospheric pressure and the distance traveled by the light, and two CO₂ bands (1.61 µm and 2.06 µm) to detect the concentration of the gas near the surface and the vertical structure of the atmosphere. This allows for calculating the average molar fraction of CO₂ (XCO₂) with a precision of better than 1 part per million (ppm)." 
     },
     1: { 
+        nomeIntero: "Sentinel-6 Michael Freilich",
         storia: "Sentinel-6 Michael Freilich is the gold standard for sea level measurements, continuing an uninterrupted historical record of oceanographic data started in 1992.", 
         come: "Sentinel-6 represents the 'gold standard' for measuring ocean levels, extending an uninterrupted data record that began over 30 years ago. Ocean height is a fundamental climate indicator: as water expands as it warms, variations in sea level directly reflect the heat stored by the oceans, which absorb over 90% of the excess heat trapped by greenhouse gases. <br><br>The mission allows for monitoring global sea level rise — which has grown by more than 10 cm since the early 1990s — caused by both thermal expansion and the melting of glaciers. The data are essential for early warning systems for phenomena such as El Niño (ENSO) and for improving predictions on ocean circulation, providing vital information for the protection of global coastal infrastructures through 2030 and beyond. <br><br>Sentinel-6 Michael Freilich is a collaboration between NASA, ESA, EUMETSAT, NOAA, CNES and the European Commission.", 
         perche: "The measurement of sea level is done via a dual-frequency radar altimeter. The satellite sends microwave pulses toward the ocean surface and measures with extreme precision the time taken for the signal to bounce and return to the receiver. Conknowing the speed of light and the travel time, it is possible to calculate the exact distance between the satellite and the water surface. <br><br>To determine the height of the ocean relative to the center of the Earth, the satellite sends microwaves that bounce off the surface; by combining the return time with its precise orbital position (obtained via GPS and laser systems), scientists derive the local ocean height. Sentinel-6 is capable of measuring the sea surface with an accuracy of approximately 3 centimeters from an orbit at 1336 km altitude. Flying over the entire planet every 10 days, the satellite provides a complete map of ocean topography, identifying variations related to currents and temperature." 
     },
     2: { 
+        nomeIntero: "Ice, Cloud, and land Elevation Satellite-2",
         storia: "ICESat-2 (Ice, Cloud, and land Elevation Satellite-2) maps the Earth's height with millimeter precision using laser pulses from space.", 
         come: "Quantifying the mass balance of ice sheets represents a crucial challenge identified by the IPCC, as it directly affects predictions of global sea level change. ICESat-2 addresses this uncertainty by establishing a precise baseline before global warming further alters the balance. <br><br>Unlike conventional radars that have difficulty on inclined and crevassed surfaces, ICESat-2's ATLAS LIDAR is capable of measuring ice thickness changes of less than 1 cm per year. This sensitivity is vital for determining whether ice sheets are growing or shrinking, providing early signs of instability in critical areas such as West Antarctica. <br><br>By monitoring glacial flows, grounding lines, and the volume of perennial ice, the mission fills fundamental gaps in our understanding of the climate system, transforming unique lidar data into reliable global predictions.", 
         perche: "ICESat-2 operates through the GLAS (Geoscience Laser Altimeter System) system, emitting ultra-short laser pulses capable of mapping the Earth with millimeter precision. The system uses LiDAR technology: it emits 40 pulses per second that strike the surface, creating 70-meter 'footprints.' By calculating the flight time of the photons that return to the satellite and cross-referencing the data with the orbital GPS position, the instrument measures elevation with an error of less than 15 cm. <br><br>In addition to ice, ICESat-2 penetrates vegetation to measure forest height and analyzes the vertical structure of clouds and aerosols, providing unique data on polar atmospheric dynamics even during long periods of winter darkness." 
     },
     3: {
+        nomeIntero: "Suomi National Polar-orbiting Partnership",
         storia: "The Suomi NPP (National Polar-orbiting Partnership) satellite is the technological bridge between NASA's Earth Observing System missions and future weather satellites.",
         come: "Precisely knowing the amount of ozone in our atmosphere is a matter of planetary security. Stratospheric ozone acts as a shield for the Earth, absorbing most of the harmful ultraviolet (UV-B) radiation from the Sun. <br><br>The utility of these data is reflected in three areas: <br>• Protection of human health: avoids the increase in skin cancers and immune system damage by monitoring 'holes' in the protective layer. <br>• Safeguarding ecosystems: excessive UV radiation damages phytoplankton and reduces crop yields. <br>• Verification of international treaties: allows for confirming if the Montreal Protocol is working, observing the healing of the ozone layer.",
         perche: "Suomi NPP orbits the Earth 14 times a day from pole to pole using the OMPS (Ozone Mapping and Profiler Suite) instrument. <br><br>The operation is based on spectroscopy: the OMPS analyzes sunlight reflected from the Earth's surface and scattered by the atmosphere (backscattering). Since ozone absorbs ultraviolet light at specific wavelengths, the satellite measures how much of this light is 'missing' in the return signal."
     },
     4: {
+        nomeIntero: "Aqua EOS Satellite",
         storia: "Aqua is a multinational NASA mission aimed at studying the Earth's water cycle, collecting data on oceans, atmosphere, soil, and ice.",
         come: "Aqua monitors the planet's water and energy balance by studying the atmosphere (humidity and clouds), the oceans (temperature and phytoplankton), sea ice, soil moisture, and precipitation. <br><br>The importance of this mission lies in improving weather forecasts and understanding global warming. Water vapor is the most abundant greenhouse gas; by monitoring it, Aqua helps to understand how temperatures influence the water cycle, causing droughts or floods. Furthermore, it detects the health of marine life and helps manage global water resources.",
         perche: "Aqua operates in a sun-synchronous orbit that scans every point of the Earth at the same local time (about 1:30 PM). <br><br>The satellite uses a suite of hyperspectral and microwave instruments: <br>• AIRS: creates 3D maps of temperature and humidity by measuring infrared radiation. <br>• AMSR-E: penetrates clouds with microwaves to measure rain and soil moisture."
@@ -70,7 +75,6 @@ function generateNav() {
     satellites.forEach((sat, i) => {
         const item = document.createElement('div');
         item.className = 'nav-item';
-        // MODIFICA: Agganciato l'hover del menu alla variabile globale hoveredIndex
         item.onmouseenter = () => { hoveredIndex = i; };
         item.onmouseleave = () => { hoveredIndex = -1; };
         item.innerHTML = `<button class="nav-btn" onclick="selectSatellite(${i})" id="btn-${i}">${sat.name}</button>
@@ -82,7 +86,6 @@ function generateNav() {
 function draw() {
     if (isDetailPage || isSourcesPage) return; background(0);
     
-    // Gestione dell'hovering calcolato dinamicamente sui cerchi basandosi sulla rotazione corrente
     if (isInteracting && !mouseIsPressed) {
         let currentClosest = -1;
         let clickRadius = 45;
@@ -96,7 +99,6 @@ function draw() {
         if (currentClosest !== -1) hoveredIndex = currentClosest;
     }
 
-    // MODIFICA: Sincronizzazione visiva delle classi CSS dei bottoni nell'HTML in base all'hoveredIndex
     document.querySelectorAll('.nav-btn').forEach((btn, idx) => {
         if (idx === hoveredIndex) {
             btn.classList.add('active');
@@ -134,52 +136,46 @@ function drawOrbitMarker(position, isHovered) {
     pop();
 }
 
-function createDetailModel(satIndex) {
-    if (detailP5) detailP5.remove();
-    const sketch = (p) => {
-        let modelObj = null; let texObj = null;
-        p.preload = () => {
-            modelObj = p.loadModel(modelPaths[satIndex], true);
-            if (satIndex === 3) texObj = p.loadImage('assets/imgs/tex_Suomi.png');
-            if (satIndex === 4) texObj = p.loadImage('assets/imgs/tex_Aqua.png');
-        };
-        p.setup = () => { let container = document.getElementById('detail-3d-container'); let canvas = p.createCanvas(container.offsetWidth, container.offsetHeight, p.WEBGL); canvas.parent(container); };
-        p.draw = () => { 
-            p.background(0); p.orbitControl(); p.ambientLight(200); p.pointLight(255, 255, 255, 0, 0, 400); 
-            p.push(); p.rotateX(p.PI); p.scale(1.2); p.noStroke();
-            if (texObj) p.texture(texObj); else p.emissiveMaterial(satellites[satIndex].color);
-            if (modelObj) p.model(modelObj); p.pop(); 
-        };
-    };
-    detailP5 = new p5(sketch);
-}
+function createDetailModel(satIndex) {}
 
 function startExperience() { document.getElementById('page-0').classList.add('hidden'); document.getElementById('ui-layer').classList.add('active'); isInteracting = true; }
 
 function selectSatellite(index) { 
     selectedSatIndex = index; 
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active')); 
-    document.getElementById('btn-' + index).classList.add('active'); 
-    setTimeout(openDetails, 500); 
+    const targetBtn = document.getElementById('btn-' + index);
+    if (targetBtn) targetBtn.classList.add('active'); 
+    
+    if (isDetailPage) {
+        updateDetailView(currentDetailSubPage);
+        generateDetailButtons();
+    } else {
+        currentDetailSubPage = "about";
+        setTimeout(openDetails, 500); 
+    }
+}
+
+function generateDetailButtons() {
+    const tabContainer = document.querySelector('.detail-chapters');
+    if (tabContainer) {
+        tabContainer.innerHTML = "";
+        satellites.forEach((sat, i) => {
+            const item = document.createElement('div');
+            item.className = 'nav-item';
+            item.innerHTML = `<button class="chapter-btn ${i === selectedSatIndex ? 'active' : ''}" onclick="selectSatellite(${i})">${sat.name}</button>`;
+            tabContainer.appendChild(item);
+        });
+    }
 }
 
 function openDetails() { 
     isDetailPage = true; 
-    updateDetailView('storia'); 
+    updateDetailView(currentDetailSubPage); 
     document.getElementById('detail-page').classList.add('active'); 
-    createDetailModel(selectedSatIndex);
-    let nextIdx = (selectedSatIndex + 1) % satellites.length;
-    document.getElementById('btn-successivo').innerText = satellites[nextIdx].name + " →";
+    generateDetailButtons();
 }
 
-function nextSatellite() {
-    let nextIdx = (selectedSatIndex + 1) % satellites.length;
-    document.querySelectorAll('.chapter-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.chapter-btn')[0].classList.add('active');
-    selectSatellite(nextIdx);
-}
-
-function closeDetails() { isDetailPage = false; if (detailP5) { detailP5.remove(); detailP5 = null; } document.getElementById('detail-page').classList.remove('active'); resetView(); }
+function closeDetails() { isDetailPage = false; document.getElementById('detail-page').classList.remove('active'); resetView(); }
 
 function resetView() { 
     selectedSatIndex = -1; 
@@ -189,82 +185,99 @@ function resetView() {
 function openSources() { isSourcesPage = true; document.getElementById('sources-page').classList.add('active'); }
 function closeSources() { isSourcesPage = false; document.getElementById('sources-page').classList.remove('active'); }
 
-function updateDetailView(key) {
+function updateDetailView(subPage) {
+    currentDetailSubPage = subPage;
     const sat = satellites[selectedSatIndex]; 
     const container = document.getElementById('detail-content');
-    document.getElementById('detail-title').innerText = sat.name;
-    if (key === 'storia') {
-        container.innerHTML = `<p>${chapterData[selectedSatIndex].storia}</p><div style="margin-top:40px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px;"><div><b>${labels.agency}</b><span>${sat.specs.agency}</span><b>${labels.launch}</b><span>${sat.specs.launch}</span><b>${labels.mass}</b><span>${sat.specs.mass}</span><b>${labels.orbit}</b><span>${sat.specs.orbit}</span></div><div><b>${labels.status}</b><span>${sat.specs.status}</span><b>${labels.size}</b><span>${sat.specs.size}</span><b>${labels.cost}</b><span>${sat.specs.cost}</span><b>${labels.life}</b><span>${sat.specs.life}</span></div></div>`;
-    } else {
-        container.innerHTML = `<p>${chapterData[selectedSatIndex][key]}</p>`;
+    
+    const textContainer = document.querySelector('.detail-text');
+    if (textContainer) {
+        let titleBlock = document.getElementById('detail-title-block');
+        if (!titleBlock) {
+            titleBlock = document.createElement('div');
+            titleBlock.id = 'detail-title-block';
+            textContainer.insertBefore(titleBlock, container);
+        }
+        
+        titleBlock.innerHTML = `
+            <h1 id="detail-title">${chapterData[selectedSatIndex].nomeIntero}</h1>
+            <div class="sub-page-tabs" style="margin-bottom: 30px; display: flex; gap: 15px;">
+                <button class="tab-toggle-btn ${subPage === 'about' ? 'active' : ''}" onclick="updateDetailView('about')" style="padding: 10px 20px; background: ${subPage === 'about' ? 'white' : 'transparent'}; color: ${subPage === 'about' ? 'black' : 'white'}; border: 1px solid white; cursor: pointer; font-size: 12px; font-weight: ${subPage === 'about' ? 'bold' : 'normal'}; text-transform: uppercase; transition: 0.3s;">About</button>
+                <button class="tab-toggle-btn ${subPage === 'tech' ? 'active' : ''}" onclick="updateDetailView('tech')" style="padding: 10px 20px; background: ${subPage === 'tech' ? 'white' : 'transparent'}; color: ${subPage === 'tech' ? 'black' : 'white'}; border: 1px solid white; cursor: pointer; font-size: 12px; font-weight: ${subPage === 'tech' ? 'bold' : 'normal'}; text-transform: uppercase; transition: 0.3s;">Technical Sheet</button>
+            </div>
+        `;
+    }
+
+    if (!container) return;
+
+    if (subPage === 'about') {
+        // MODIFICA: Assegnata la classe "about-media-box" per mantenere le dimensioni correnti dell'iframe
+        container.innerHTML = `
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start;">
+                <div>
+                    <p style="margin-top: 0;">${chapterData[selectedSatIndex].storia}</p>
+                    <p>${chapterData[selectedSatIndex].come}</p>
+                </div>
+                <div class="about-media-box" style="position: relative; width: 100%; height: 350px; border: none;">
+                    <div class="expand-hint">${labels.expand}</div>
+                    <div style="position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer; z-index:15;" onclick="openExternalFrame()"></div>
+                    <iframe src="${frameLinks[selectedSatIndex]}" style="width:100%; height:100%; border:none; pointer-events:none;"></iframe>
+                </div>
+            </div>`;
+   } else if (subPage === 'tech') {
+        let imgContent = "";
+        if (selectedSatIndex === 0) imgContent = `assets/imgs/OCO2.png`;
+        else if (selectedSatIndex === 1) imgContent = `assets/imgs/Sentinel6b.png`;
+        else if (selectedSatIndex === 2) imgContent = `assets/imgs/ICESat2.png`;
+        else if (selectedSatIndex === 3) imgContent = `assets/imgs/SuomiNPP.png`;
+        else if (selectedSatIndex === 4) imgContent = `assets/imgs/Aqua.png`;
+
+        // MODIFICA: Assegnata la classe "tech-media-box" per l'immagine del Technical Sheet, che verrà controllata separatamente nel CSS
+        container.innerHTML = `
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px;">
+                    <div>
+                        <b>${labels.agency}</b><span>${sat.specs.agency}</span>
+                        <b>${labels.launch}</b><span>${sat.specs.launch}</span>
+                        <b>${labels.mass}</b><span>${sat.specs.mass}</span>
+                        <b>${labels.orbit}</b><span>${sat.specs.orbit}</span>
+                    </div>
+                    <div>
+                        <b>${labels.status}</b><span>${sat.specs.status}</span>
+                        <b>${labels.size}</b><span>${sat.specs.size}</span>
+                        <b>${labels.cost}</b><span>${sat.specs.cost}</span>
+                        <b>${labels.life}</b><span>${sat.specs.life}</span>
+                    </div>
+                </div>
+                <div class="tech-media-box" style="width: 100%;">
+                    <img src="${imgContent}" class="detail-side-img" style="width: 100%; height: 350px; object-fit: cover; border: none;">
+                </div>
+            </div>`;
     }
 }
 
 function openExternalFrame() { window.open(frameLinks[selectedSatIndex], '_blank'); }
 
-function changeChapter(key, btn) {
-    document.querySelectorAll('.chapter-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); updateDetailView(key);
-    const container3d = document.getElementById('detail-3d-container');
-    if (detailP5) { detailP5.remove(); detailP5 = null; }
-    container3d.innerHTML = ""; container3d.style.visibility = "visible";
-    
-    if (key === 'come') {
-        container3d.innerHTML = `
-            <div class="expand-hint">${labels.expand}</div>
-            <div style="position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer; z-index:15;" onclick="openExternalFrame()"></div>
-            <iframe src="${frameLinks[selectedSatIndex]}" style="width:100%; height:100%; border:none; pointer-events:none;"></iframe>
-        `;
-    } else if (key === 'perche') {
-        let imgContent = "";
-        if (selectedSatIndex === 0) imgContent = `<img src="assets/imgs/measure_approach-br.original.jpg" class="detail-side-img"><img src="assets/imgs/oco_bands_larger.original.png" class="detail-side-img">`;
-        else if (selectedSatIndex === 1) imgContent = `<img src="assets/imgs/ssha-map-2025-1201.jpg" class="detail-side-img">`;
-        else if (selectedSatIndex === 2) imgContent = `<img src="assets/imgs/plrcloud.gif" class="detail-side-img">`;
-        else if (selectedSatIndex === 3) imgContent = `<img src="assets/imgs/ozone_omp_2012027_lrg.jpg" class="detail-side-img">`;
-        else if (selectedSatIndex === 4) imgContent = `<img src="assets/imgs/eos1.webp" class="detail-side-img">`;
-        container3d.innerHTML = imgContent;
-    } else if (key === 'storia') { createDetailModel(selectedSatIndex); }
-}
+function changeChapter(key, btn) {}
 
 function getProjectedPosition(pos) {
-    let x = pos.x;
-    let y = pos.y;
-    let z = pos.z;
-
-    let cosY = cos(rotY);
-    let sinY = sin(rotY);
-    let xRotY = x * cosY + z * sinY;
-    let zRotY = -x * sinY + z * cosY;
-
-    let cosX = cos(rotX);
-    let sinX = sin(rotX);
-    let yRotX = y * cosX - zRotY * sinX;
-    let zRotX = y * sinX + zRotY * cosX;
-
+    let x = pos.x; let y = pos.y; let z = pos.z;
+    let cosY = cos(rotY); let sinY = sin(rotY);
+    let xRotY = x * cosY + z * sinY; let zRotY = -x * sinY + z * cosY;
+    let cosX = cos(rotX); let sinX = sin(rotX);
+    let yRotX = y * cosX - zRotY * sinX; let zRotX = y * sinX + zRotY * cosX;
     let distanceToCam = camZ - zRotX;
     let fovFactor = (height / 2.0) / tan(PI * 30.0 / 180.0);
     let scaleProject = fovFactor / distanceToCam;
-
-    return {
-        x: xRotY * scaleProject + width / 2,
-        y: yRotX * scaleProject + height / 2,
-        z: distanceToCam
-    };
+    return { x: xRotY * scaleProject + width / 2, y: yRotX * scaleProject + height / 2, z: distanceToCam };
 }
 
 function mouseClicked() {
     if (isDetailPage || isSourcesPage || !isInteracting) return;
-    let closest = -1;
-    let clickRadius = 45; 
-    
+    let closest = -1; let clickRadius = 45; 
     for (let i = 0; i < satellites.length; i++) {
         let p = getProjectedPosition(satellites[i].pos);
-        if (p.z > 0) { 
-            let d = dist(mouseX, mouseY, p.x, p.y);
-            if (d < clickRadius) {
-                closest = i;
-                break;
-            }
-        }
+        if (p.z > 0) { let d = dist(mouseX, mouseY, p.x, p.y); if (d < clickRadius) { closest = i; break; } }
     }
     if (closest !== -1) selectSatellite(closest);
 }

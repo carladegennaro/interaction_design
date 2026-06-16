@@ -7,7 +7,7 @@
 <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
 <link rel="stylesheet" href="assets/style/style.css">
 </head>
-<body>
+<body class="grid-8-columns">
 
 <div id="page-0">
     <div class="p0-title-container">
@@ -24,8 +24,9 @@
         <h1 class="p0-title" style="margin:0;">Eyes on<br>Earth</h1>
     </div>
     <div class="side-nav" id="side-nav-container"></div>
-    <div class="info-square" onclick="openSources()">?</div>
 </div>
+
+<div class="info-square" onclick="openSources()">?</div>
 
 <div id="sources-page">
     <button class="back-btn back-txt" onclick="closeSources()">← Back</button>
@@ -35,6 +36,11 @@
             <a href="https://eyes.nasa.gov/apps/earth/#/satellites/suomi-npp" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Eyes on the Earth</i>. https://eyes.nasa.gov/apps/earth/#/satellites/suomi-npp</a>
             <a href="https://science.nasa.gov/3d-resources/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>3D resources</i>. NASA Science. https://science.nasa.gov/3d-resources/</a>
         </div>
+        
+        <div class="source-group"><b>Satellites Imagery (Technical Sheet)</b>
+            <a href="https://eyes.nasa.gov/apps/solar-system/#/home" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Eyes on the Solar System: Home</i>. https://eyes.nasa.gov/apps/solar-system/#/home</a>
+        </div>
+
         <div class="source-group"><b>OCO-2</b>
             <a href="https://ocov2.jpl.nasa.gov" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Orbiting Carbon Observatory-2</i>. Jet Propulsion Laboratory. https://ocov2.jpl.nasa.gov</a>
         </div>
@@ -49,7 +55,7 @@
         </div>
         <div class="source-group"><b>Suomi NPP</b>
             <a href="https://science.nasa.gov/mission/suomi-npp/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Suomi NPP</i>. NASA Science. https://science.nasa.gov/mission/suomi-npp/</a>
-            <a href="https://eyes.nasa.gov/apps/earth/#/satellites/suomi-npp" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Eyes on the Earth: Suomi NPP</i>. https://eyes.nasa.gov/apps/earth/#/satellites/suomi-npp</a>
+            <a href="https://eyes.nasa.gov/apps/earth/#/satellites/suomi-npp" class="source-link" target="_blank">National Aeronautics United States. (n.d.). <i>Eyes on the Earth: Suomi NPP</i>. https://eyes.nasa.gov/apps/earth/#/satellites/suomi-npp</a>
             <a href="https://www.nasa.gov/earth/climate-change/ozone-layer/2023-ozone-hole-ranks-16th-largest/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>2023 ozone hole ranks 16th largest</i>. https://www.nasa.gov/earth/climate-change/ozone-layer/2023-ozone-hole-ranks-16th-largest/</a>
         </div>
         <div class="source-group"><b>Aqua</b>
@@ -60,18 +66,15 @@
 
 <div id="detail-page">
     <button class="back-btn back-txt" onclick="closeDetails()">← Back</button>
-    <div class="detail-chapters">
-        <button class="chapter-btn active chapter-txt-1" onclick="changeChapter('storia', this)">Technical Sheet</button>
-        <button class="chapter-btn chapter-txt-2" onclick="changeChapter('come', this)">Utility</button>
-        <button class="chapter-btn chapter-txt-3" onclick="changeChapter('perche', this)">How it works</button>
-    </div>
+    
+    <div class="detail-chapters"></div>
+
     <div class="detail-text">
-        <h1 id="detail-title">NAME</h1>
-        <h3 id="detail-chapter-name" class="chapter-txt-1">Technical Sheet</h3>
+        <div id="detail-title-block">
+            <h1 id="detail-title">NAME</h1>
+        </div>
         <div id="detail-content" class="tech-info-block"></div>
     </div>
-    <div id="detail-3d-container"></div>
-    <button id="btn-successivo" onclick="nextSatellite()">NAME</button>
 </div>
 
 <script src="assets/script/script.js"></script>

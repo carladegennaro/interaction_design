@@ -63,12 +63,12 @@ canvas { position: fixed; top: 0; left: 0; z-index: -1; }
     box-sizing: border-box; padding: 120px 40px 40px 40px;
     overflow-y: auto;
 }
-#sources-page.active { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+#sources-page.active { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; align-items: start; }
 
 .sources-content { grid-column: 3 / 9; text-align: left; }
 .sources-content h1 { font-size: 48px; margin: 0 0 40px 0; text-transform: none; letter-spacing: -1px; color: white; }
 .source-group { margin-bottom: 30px; opacity: 0.8; }
-.source-group b { display: block; margin-bottom: 5px; color: white; text-transform: none; font-size: 12px; letter-spacing: 1px; }
+.source-group b { display: block; margin-bottom: 5px; color: white; text-transform: none; font-size: 12px; letter-spacing: 1px; opacity: 0.6; }
 .source-link { color: white; text-decoration: none; display: block; font-size: 14px; margin-bottom: 5px; line-height: 1.5; }
 .source-link:hover { text-decoration: underline; }
 
@@ -87,23 +87,27 @@ canvas { position: fixed; top: 0; left: 0; z-index: -1; }
     position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
     background: #000; z-index: 300; display: none; 
     box-sizing: border-box; padding: 120px 40px 40px 40px; 
-    overflow-y: auto; /* Permette alla pagina di scorrere se il testo supera l'altezza */
+    overflow-y: auto;
 }
 #detail-page.active { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; align-items: start; }
 
-/* Bottoni laterali impostati come sticky e ancorati geometricamente */
+/* Riposizionato esattamente nello stesso punto geometrico di .side-nav */
 .detail-chapters { 
-    grid-column: 1;
-    position: sticky; 
-    top: 120px; /* Rimane fisso allineandosi all'altezza del padding superiore */
+    position: absolute; 
+    left: 40px; 
+    top: 50%; 
+    transform: translateY(-30%); 
     display: flex; 
     flex-direction: column; 
     gap: 20px; 
     z-index: 510;
 }
 
-.detail-text { grid-column: 3 / 9; font-size: 14px; line-height: 1.8; opacity: 0.8; text-align: left; padding-right: 15px; color: white; }
-.detail-text h1 { font-size: 48px; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: -1px; color: white; }
+/* Il blocco di testo si estende ora fino alla colonna 12 occupando più spazio orizzontale */
+.detail-text { grid-column: 3 / 13; font-size: 14px; line-height: 1.8; opacity: 0.8; text-align: left; padding-right: 15px; color: white; }
+
+/* Inserito margin-bottom sul titolo h1 per spingere i bottoni About / Tech verso il basso, allontanandoli dal testo */
+.detail-text h1 { font-size: 48px; margin: 0 0 40px 0; text-transform: uppercase; letter-spacing: 1px; color: white; max-width: 600px; white-space: pre-wrap; line-height: 1.2; }
 .detail-text h3 { font-size: 14px; text-transform: none; letter-spacing: 2px; color: white; opacity: 0.5; margin-bottom: 30px; }
 
 #detail-3d-container { 
@@ -117,10 +121,33 @@ canvas { position: fixed; top: 0; left: 0; z-index: -1; }
 #btn-successivo { position: fixed; bottom: 40px; left: 40px; background: transparent; border: 1px solid white; color: white; padding: 12px 20px; cursor: pointer; font-size: 11px; z-index: 500; transition: 0.3s; min-width: 150px; text-align: left; box-sizing: border-box; text-transform: uppercase; }
 #btn-successivo:hover { background: white; color: black; }
 
-.chapter-btn { padding: 15px; border: 1px solid rgba(255,255,255,0.3); color: white; background: rgba(0,0,0,0.5); cursor: pointer; transition: 0.3s; font-size: 12px; text-transform: none; text-align: left; min-width: 150px; }
-.chapter-btn.active { background: white; color: black; font-weight: bold; }
+/* Reso graficamente identico a .nav-btn */
+.chapter-btn { 
+    padding: 15px; border: 1px solid rgba(255,255,255,0.3); color: white; background: rgba(0,0,0,0.5); 
+    cursor: pointer; transition: 0.3s; font-size: 12px; letter-spacing: 1px; text-align: left; 
+    min-width: 150px; text-transform: uppercase;
+}
+.chapter-btn:hover, .chapter-btn.active { background: white; color: black; font-weight: bold; border-color: white; }
 
-.detail-side-img { width: 100%; height: auto; object-fit: contain; background: transparent; }
+/* Rimosso esplicitamente qualsiasi bordo/filetto dall'immagine interna del Technical Sheet */
+.detail-side-img { width: 100%; height: 350px; object-fit: cover; background: transparent; border: none !important; outline: none !important; }
+
+/* Mantiene l'allineamento bloccato fisso ad OCO-2 impostato in precedenza per l'intero blocco multimediale */
+#detail-content > div[style*="display: grid"] > div:last-child {
+    position: fixed !important;
+    top: 50% !important;
+    transform: translateY(-30%) !important;
+    right: 40px !important;
+    width: calc(33.33vw - 60px) !important; /* Dimensione base originale (usata per l'iframe in About) */
+    height: 350px !important;
+    z-index: 520 !important;
+    border: none !important;
+}
+
+/* MODIFICA: Allargato ulteriormente il box dell'immagine per occupare l'equivalente di 6 colonne piene (50vw) senza intaccare il resto */
+#detail-content > div[style*="display: grid"] > div:has(> img.detail-side-img) {
+    width: calc(50vw - 60px) !important;
+}
 
 /* Mantieni l'indicatore fisso sul contenuto multimediale */
-.expand-hint { position: absolute; top: 10px; right: 10px; font-size: 10px; background: rgba(0,0,0,0.8); color: white; padding: 5px 10px; pointer-events: none; text-transform: uppercase; opacity: 1; z-index: 20; border: 1px solid white; }
+.expand-hint { position: absolute; top: 10px; right: 10px; font-size: 10px; background: rgba(0,0,0,0.8); color: white; padding: 5px 10px; pointer-events: none; text-transform: uppercase; opacity: 1; z-index: 20; border: none !important; }
