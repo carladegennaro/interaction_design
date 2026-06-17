@@ -49,10 +49,10 @@ function setup() {
     lookAt = createVector(0, 0, 0); targetLookAt = createVector(0, 0, 0);
     for (let i = 0; i < 900; i++) stars.push(createVector(random(-2000, 2000), random(-2000, 2000), random(-2000, 2000)));
     satellites = [
-        { name: "Oco-2", pos: createVector(260, -70, 120), color: [255, 120, 50], specs: { agency: "NASA", launch: "02 Jul 2014", mass: "447 kg", orbit: "705 km", status: "Operational", size: "2.1m x 2.1m", cost: "$467.7M", life: "2 years" } },
+        { name: "OCO-2", pos: createVector(260, -70, 120), color: [255, 120, 50], specs: { agency: "NASA", launch: "02 Jul 2014", mass: "447 kg", orbit: "705 km", status: "Operational", size: "2.1m x 2.1m", cost: "$467.7M", life: "2 years" } },
         { name: "Sentinel-6", pos: createVector(-290, 60, -140), color: [100, 255, 200], specs: { agency: "ESA/NASA", launch: "21 Nov 2020", mass: "1192 kg", orbit: "1336 km", status: "Operational", size: "5.1m x 2.3m", cost: "$800M", life: "5.5 years" } },
         { name: "Aura", pos: createVector(120, -300, 80), color: [255, 215, 0], specs: { agency: "NASA", launch: "15 Jul 2004", mass: "2967 kg", orbit: "705 km", status: "Operational", size: "4.7m x 17.0m", cost: "$785M", life: "5 years" } },
-        { name: "Suomi Npp", pos: createVector(-150, 250, 180), color: [255, 100, 255], specs: { agency: "NASA/NOAA", launch: "28 Oct 2011", mass: "2128 kg", orbit: "824 km", status: "Operational", size: "4.3m x 2.5m", cost: "$1.5B", life: "5 years" } },
+        { name: "Suomi NPP", pos: createVector(-150, 250, 180), color: [255, 100, 255], specs: { agency: "NASA/NOAA", launch: "28 Oct 2011", mass: "2128 kg", orbit: "824 km", status: "Operational", size: "4.3m x 2.5m", cost: "$1.5B", life: "5 years" } },
         { name: "Aqua", pos: createVector(300, 100, -200), color: [100, 255, 100], specs: { agency: "NASA", launch: "04 May 2002", mass: "3117 kg", orbit: "705 km", status: "Operational", size: "4.8m x 16.7m", cost: "$952M", life: "6 years" } }
     ];
     generateNav();
