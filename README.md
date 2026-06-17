@@ -13,8 +13,8 @@ Autore: Carla De Gennraro \
 Sviluppato in occasione dei 70 anni dalla conquista dello spazio della NASA, questo progetto esamina l'impatto continuo del cambiamento climatico attraverso lo studio di cinque satelliti chiave per l'osservazione della Terra. L'iniziativa è progettata per illustrare come funzionano questi veicoli spaziali e perché i loro dati siano così importanti per la ricerca scientifica e per il monitoraggio della salute del nostro pianeta.
 
 ## Riferimenti progettuali
-[https://www.anthropic.com/features/claude-on-mars](url)
-
+Il layout e la logica visiva del progetto non nascono dall'ispirazione diretta di un sito web in particolare, ma dall'approccio metodologico di uno stile preciso: quello delle interfacce tecniche e dei sistemi informativi modulari.
+Lo spunto principale per la ripartizione dello spazio visivo deriva dall'estetica dei cruscotti di controllo. Da questo immaginario tecnico è stata ripresa l'idea di utilizzare una struttura geometrica rigorosa, basata su blocchi rettangolari e caselle di contenimento che delimitano nettamente le diverse aree funzionali.
 
 ## Design dell’interfaccia e modalità di interazione
 Il sito è composto da tre pagine principali: una landing page, in cui si ritrova la descrizione del sito stesso e che introduce l'utente all'esperienza; una homepage, costituita dal menu laterale sulla sinistra e dal globo terrestre circondato dai cinque satelliti interattivi; e infine le pagine di dettaglio dei vari satelliti, all'interno delle quali si ritrovano i dati specifici e più scientifici legati alle singole missioni. L’interfaccia adotta un layout a schermata fissa strutturato su dodici colonne con da caselle geometriche per i bottoni.
