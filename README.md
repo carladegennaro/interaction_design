@@ -29,8 +29,14 @@ Navigazione Orbitale. Una rappresentazione 3D della Terra in un vuoto cosmico.
 Sistema di Dettaglio. Cliccando su un satellite, l'interfaccia si trasforma in un cruscotto analitico diviso in tre capitoli:
 - Scheda Tecnica (visualizzazione di un modello 3D interattivo del satellite e dati strutturali), utilità (accesso diretto a dati reali tramite preview di mappe satellitari (link esterni)) e come funziona (approfondimento scientifico con schemi e immagini reali delle missioni).
 
-<img width="1236" height="1236" alt="carla1" src="earth-albedo.jpg" /> 
-https://github.com/user-attachments/assets/d6f86ada-3f9a-4988-9ac8-b81028d84b1f
+
+https://github.com/user-attachments/assets/c9126743-8da4-469c-bf54-5e9317b5e102
+
+<img width="464" height="454" alt="0_screen2" src="https://github.com/user-attachments/assets/c3c5d942-2fdb-4968-bdfc-b57bb191c811" />
+<img width="464" height="454" alt="0_screen2" src="https://github.com/user-attachments/assets/31759482-243d-4d01-8974-1bd1ce2cfb44" />
+<img width="1512" height="855" alt="0_screen1" src="https://github.com/user-attachments/assets/38cb2fdd-106b-4535-93fb-021fd745beee" />
+
+
 
 
 ## Tecnologia usata
