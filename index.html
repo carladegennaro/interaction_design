@@ -1,82 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eyes on Earth</title>
-<script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
-<link rel="stylesheet" href="assets/style/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eyes on Earth</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+    <link rel="stylesheet" href="assets/style/style.css">
 </head>
-<body class="grid-8-columns">
+<body>
 
-<div id="page-0">
-    <div class="p0-title-container">
-        <h1 class="p0-title">Eyes on<br>Earth</h1>
-        <div class="p0-content">
-            <p class="p0-desc" id="p0-desc-text">On the occasion of NASA's seventieth anniversary, founded in 1958, this project explores the agency's digital archives to highlight the importance of aerospace technology in monitoring our planet's health. By navigating through five key satellites, you will discover how the conquest of space has become the fundamental tool for understanding global changes. Start your journey to see Earth as you have never seen it before.</p>
-            <button class="explore-btn" id="explore-btn-text" onclick="startExperience()">Explore</button>
+    <div id="page-0">
+        <div class="p0-title-container">
+            <h1 class="p0-title">Eyes on<br>Earth</h1>
+            <div class="p0-content">
+                <p class="p0-desc" id="p0-desc-text">On the occasion of NASA's seventieth anniversary, founded in 1958, this project explores the agency's digital archives to highlight the importance of aerospace technology in monitoring our planet's health. By navigating through five key satellites, you will discover how the conquest of space has become the fundamental tool for understanding global changes. Start your journey to see Earth as you have never seen it before.</p>
+                <button class="explore-btn" id="explore-btn-text" onclick="startExperience()">Explore</button>
+            </div>
         </div>
     </div>
-</div>
 
-<div id="ui-layer">
-    <div class="clickable-title" onclick="resetView()">
-        <h1 class="p0-title" style="margin:0;">Eyes on<br>Earth</h1>
+    <div id="ui-layer">
+        <div class="clickable-title" onclick="resetView()">
+            <h1 class="p0-title">Eyes on<br>Earth</h1>
+        </div>
+        <div class="side-nav" id="side-nav-container"></div>
     </div>
-    <div class="side-nav" id="side-nav-container"></div>
-</div>
 
-<div class="info-square" onclick="openSources()">?</div>
+    <div class="bottom-left-controls">
+        <div class="info-square" onclick="document.getElementById('page-0').classList.remove('hidden')">About</div>
+        <div class="info-square" onclick="openSources()">Sources</div>
+    </div>
 
-<div id="sources-page">
-    <button class="back-btn back-txt" onclick="closeSources()">← Back</button>
-    <div class="sources-content">
-        <h1 id="sources-title-text">Sources</h1>
-        <div class="source-group"><b>General Resources</b>
-            <a href="https://eyes.nasa.gov/apps/earth/#/satellites/suomi-npp" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Eyes on the Earth</i>. https://eyes.nasa.gov/apps/earth/#/satellites/suomi-npp</a>
-            <a href="https://science.nasa.gov/3d-resources/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>3D resources</i>. NASA Science. https://science.nasa.gov/3d-resources/</a>
-        </div>
-        
-        <div class="source-group"><b>Satellites Imagery (Technical Sheet)</b>
-            <a href="https://eyes.nasa.gov/apps/solar-system/#/home" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Eyes on the Solar System: Home</i>. https://eyes.nasa.gov/apps/solar-system/#/home</a>
-        </div>
+    <div id="sources-page">
+        <button class="back-btn back-txt" onclick="closeSources()">← Back</button>
+        <div class="sources-content">
+            <h1 id="sources-title-text">Sources</h1>
+            
+            <div class="source-group"><b>Mission visualisation</b>
+                <a href="https://eyes.nasa.gov/apps/earth/#/satellites" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Eyes on the Earth</i>. Retrieved June 17, 2026, from https://eyes.nasa.gov/apps/earth/</a>
+            </div>
 
-        <div class="source-group"><b>OCO-2</b>
-            <a href="https://ocov2.jpl.nasa.gov" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Orbiting Carbon Observatory-2</i>. Jet Propulsion Laboratory. https://ocov2.jpl.nasa.gov</a>
-        </div>
-        <div class="source-group"><b>Sentinel-6</b>
-            <a href="https://www.nasa.gov/sentinel-6" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Sentinel-6 Michael Freilich satellite</i>. https://www.nasa.gov/sentinel-6</a>
-            <a href="https://www.earthdata.nasa.gov/news/sentinel-6b-continues-30-year-legacy-sea-level-measurements" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Sentinel-6B continues 30-year legacy of sea level measurements</i>. Earthdata. https://www.earthdata.nasa.gov/news/sentinel-6b-continues-30-year-legacy-sea-level-measurements</a>
-            <a href="https://science.nasa.gov/kids/earth/how-do-we-measure-sea-level/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>How do we measure sea level?</i> NASA Science Space Place. https://science.nasa.gov/kids/earth/how-do-we-measure-sea-level/</a>
-        </div>
-        <div class="source-group"><b>ICESat-2</b>
-            <a href="https://icesat-2.gsfc.nasa.gov/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Ice, Cloud, and land Elevation Satellite-2</i>. Goddard Space Flight Center. https://icesat-2.gsfc.nasa.gov/</a>
-            <a href="https://icesat.gsfc.nasa.gov/icesat/science/measurements.php" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>ICESat measurements</i>. Goddard Space Flight Center. https://icesat.gsfc.nasa.gov/icesat/science/measurements.php</a>
-        </div>
-        <div class="source-group"><b>Suomi NPP</b>
-            <a href="https://science.nasa.gov/mission/suomi-npp/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Suomi NPP</i>. NASA Science. https://science.nasa.gov/mission/suomi-npp/</a>
-            <a href="https://eyes.nasa.gov/apps/earth/#/satellites/suomi-npp" class="source-link" target="_blank">National Aeronautics United States. (n.d.). <i>Eyes on the Earth: Suomi NPP</i>. https://eyes.nasa.gov/apps/earth/#/satellites/suomi-npp</a>
-            <a href="https://www.nasa.gov/earth/climate-change/ozone-layer/2023-ozone-hole-ranks-16th-largest/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>2023 ozone hole ranks 16th largest</i>. https://www.nasa.gov/earth/climate-change/ozone-layer/2023-ozone-hole-ranks-16th-largest/</a>
-        </div>
-        <div class="source-group"><b>Aqua</b>
-            <a href="https://airs.jpl.nasa.gov/mission/airs-project-instrument-suite/eos-aqua-satellite/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>EOS Aqua satellite</i>. Atmospheric Infrared Sounder. https://airs.jpl.nasa.gov/mission/airs-project-instrument-suite/eos-aqua-satellite/</a>
+            <div class="source-group"><b>Iconography</b>
+                <a href="https://eyes.nasa.gov/apps/solar-system/#/sc_aura" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Eyes on the solar system</i>. Retrieved June 17, 2026, from https://eyes.nasa.gov/apps/solar-system/#/sc_aura</a>
+            </div>
+            
+            <div class="source-group"><b>Oco-2</b>
+                <a href="https://ocov2.jpl.nasa.gov" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Orbiting Carbon Observatory-2: Science overview</i>. Jet Propulsion Laboratory. https://ocov2.jpl.nasa.gov</a>
+                <a href="https://www.jpl.nasa.gov/news/press_kits/oco2-launch-press-kit.pdf" class="source-link" target="_blank">National Aeronautics and Space Administration. (2014). <i>OCO-2 launch press kit</i>. Jet Propulsion Laboratory. https://www.jpl.nasa.gov/news/press_kits/oco2-launch-press-kit.pdf</a>
+            </div>
+
+            <div class="source-group"><b>Sentinel-6b</b>
+                <a href="https://www.nasa.gov/sentinel-6" class="source-link" target="_blank">National Aeronautics and Space Administration. (2020). <i>Sentinel-6 Michael Freilich launch press kit</i>. NASA Science. https://www.nasa.gov/sentinel-6</a>
+                <a href="https://doi.org/10.1109/TGRS.2021.3102456" class="source-link" target="_blank">Donlon, C., Berruti, B., Buongiorno, A., & Sentinel-6 Team. (2021). The Copernicus Sentinel-6 mission: Sea-level altimetry for climate monitoring. <i>IEEE Transactions on Geoscience and Remote Sensing</i>, <i>59</i>(11), 9002–9018. https://doi.org/10.1109/TGRS.2021.3102456</a>
+            </div>
+
+            <div class="source-group"><b>Aura</b>
+                <a href="https://aura.gsfc.nasa.gov/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Aura atmospheric chemistry mission</i>. Goddard Space Flight Center. https://aura.gsfc.nasa.gov/</a>
+                <a href="https://doi.org/10.1109/TGRS.2005.862267" class="source-link" target="_blank">Schoeberl, M. R., Douglass, A. R., Hilsenrath, E., Bhartia, P. K., Beer, R., Waters, J. W., ... & Gille, J. C. (2006). Earth Observing System Aura mission overview. <i>IEEE Transactions on Geoscience and Remote Sensing</i>, <i>44</i>(5), 1166–1174. https://doi.org/10.1109/TGRS.2005.862267</a>
+            </div>
+
+            <div class="source-group"><b>Suomi Npp</b>
+                <a href="https://science.nasa.gov/mission/suomi-npp/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Suomi National Polar-orbiting Partnership</i>. NASA Science Missions. https://science.nasa.gov/mission/suomi-npp/</a>
+                <a href="https://doi.org/10.1029/2012JD018745" class="source-link" target="_blank">Justice, C. O., Román, M. O., Csiszar, I., Vermote, E. F., Wolfe, R. E., Hook, S. J., ... & Tasumi, M. (2013). Land and cryosphere products from Suomi NPP VIIRS: Context and initial evaluation. <i>Journal of Geophysical Research: Atmospheres</i>, <i>118</i>(17), 9753–9770. https://doi.org/10.1029/2012JD018745</a>
+            </div>
+
+            <div class="source-group"><b>Aqua</b>
+                <a href="https://airs.jpl.nasa.gov/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Atmospheric Infrared Sounder: Aqua mission</i>. Jet Propulsion Laboratory. https://airs.jpl.nasa.gov/</a>
+                <a href="https://doi.org/10.1109/TGRS.2002.808351" class="source-link" target="_blank">Parkinson, C. L. (2003). Aqua: An Earth Observing System satellite dedicated to the study of Earth's water cycle. <i>IEEE Transactions on Geoscience and Remote Sensing</i>, <i>41</i>(2), 173–183. https://doi.org/10.1109/TGRS.2002.808351</a>
+            </div>
         </div>
     </div>
-</div>
 
-<div id="detail-page">
-    <button class="back-btn back-txt" onclick="closeDetails()">← Back</button>
-    
-    <div class="detail-chapters"></div>
-
-    <div class="detail-text">
-        <div id="detail-title-block">
-            <h1 id="detail-title">NAME</h1>
+    <div id="detail-page">
+        <button class="back-btn back-txt" onclick="closeDetails()">← Back</button>
+        <div class="detail-chapters"></div>
+        <div class="detail-text">
+            <div id="detail-title-block">
+                <h1 id="detail-title">Name</h1>
+            </div>
+            
+            <div class="sub-page-tabs">
+                <button id="tab-btn-tech" class="tab-toggle-btn" onclick="updateDetailView('tech')">Data</button>
+                <button id="tab-btn-about" class="tab-toggle-btn" onclick="updateDetailView('about')">Mission</button>
+            </div>
+            
+            <div id="detail-content" class="tech-info-block"></div>
         </div>
-        <div id="detail-content" class="tech-info-block"></div>
     </div>
-</div>
 
-<script src="assets/script/script.js"></script>
+    <script src="assets/script/script.js"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@ let earthImg, models = [], textures = [], stars = [], satellites = [];
 let isInteracting = false, isDetailPage = false, isSourcesPage = false;
 let rotX = 0, rotY = 180, camZ = 1000, targetCamZ = 1000;
 let lookAt, targetLookAt, selectedSatIndex = -1, hoveredIndex = -1;
-let currentDetailSubPage = "about"; // Traccia la sotto-pagina attiva nei dettagli
+let currentDetailSubPage = "tech"; 
 
 const labels = {
     agency: "Agency", launch: "Launch", mass: "Mass", orbit: "Orbit",
@@ -12,45 +12,34 @@ const labels = {
 
 const chapterData = {
     0: { 
-        nomeIntero: "Orbiting Carbon Observatory-2",
-        storia: "The Orbiting Carbon Observatory-2 (OCO-2) is NASA's first mission dedicated to carbon dioxide.", 
-        come: "Carbon dioxide (CO₂) is a critical component of the Earth system: although essential for life and for maintaining a habitable surface temperature, the anthropogenic increase in its concentrations is altering the planet's radiative balance. <br><br>The Earth system regulates CO₂ through the carbon cycle, divided into 'sources' (emissions from fossil fuels, decomposition, deforestation) and 'sinks' (oceanic and terrestrial). Currently, natural sinks absorb about 50% of the CO₂ emitted by human activities. <br><br>OCO-2 provides fundamental data by measuring Sun-Induced Fluorescence (SIF). Since SIF is directly proportional to photosynthetic activity, it acts as a real-time indicator of the gross primary productivity of ecosystems. This allows for monitoring seasonal growth cycles and detecting environmental stress before they become visible.", 
-        perche: "The OCO-2 satellite uses three high-resolution grating spectrometers to determine the concentration of CO₂ in the atmosphere. These instruments do not directly measure the gas, but analyze the intensity of sunlight reflected from the Earth's surface after it has passed through the atmosphere. <br><br>The physical principle is based on molecular absorption: CO₂ and oxygen (O₂) molecules absorb specific wavelengths of light. The spectrometer breaks down the light into its color components, revealing dark absorption lines. The more CO₂ molecules present along the light path, the greater the energy absorbed in those specific frequencies. <br><br>OCO-2 observes three distinct spectral bands: the Oxygen A band (0.76 µm) to calculate atmospheric pressure and the distance traveled by the light, and two CO₂ bands (1.61 µm and 2.06 µm) to detect the concentration of the gas near the surface and the vertical structure of the atmosphere. This allows for calculating the average molar fraction of CO₂ (XCO₂) with a precision of better than 1 part per million (ppm)." 
+        nomeIntero: "Orbiting Carbon Observatory-2 (OCO-2)",
+        testoMissione: "The Orbiting Carbon Observatory-2 (OCO-2) is NASA's premier mission for mapping global atmospheric carbon dioxide (CO₂). By tracking carbon concentrations over time, the satellite helps isolate structural greenhouse fluctuations and pinpoint exactly where carbon is released or absorbed worldwide.<br><br>The satellite relies on three high-resolution spectrometers that measure the absorption lines of sunlight reflected off the Earth. As light passes through the atmosphere, CO₂ and oxygen molecules filter specific spectral frequencies. OCO-2 decodes these signals to evaluate carbon concentrations with a precision of 1 part per million (ppm).<br><br>Additionally, OCO-2 records Sun-Induced Fluorescence (SIF), a faint light emitted by plants during photosynthesis. This metric acts as a real-time health indicator for global vegetation, helping scientists observe how terrestrial carbon sinks react to climate stress and changing industrial emissions."
     },
     1: { 
         nomeIntero: "Sentinel-6 Michael Freilich",
-        storia: "Sentinel-6 Michael Freilich is the gold standard for sea level measurements, continuing an uninterrupted historical record of oceanographic data started in 1992.", 
-        come: "Sentinel-6 represents the 'gold standard' for measuring ocean levels, extending an uninterrupted data record that began over 30 years ago. Ocean height is a fundamental climate indicator: as water expands as it warms, variations in sea level directly reflect the heat stored by the oceans, which absorb over 90% of the excess heat trapped by greenhouse gases. <br><br>The mission allows for monitoring global sea level rise — which has grown by more than 10 cm since the early 1990s — caused by both thermal expansion and the melting of glaciers. The data are essential for early warning systems for phenomena such as El Niño (ENSO) and for improving predictions on ocean circulation, providing vital information for the protection of global coastal infrastructures through 2030 and beyond. <br><br>Sentinel-6 Michael Freilich is a collaboration between NASA, ESA, EUMETSAT, NOAA, CNES and the European Commission.", 
-        perche: "The measurement of sea level is done via a dual-frequency radar altimeter. The satellite sends microwave pulses toward the ocean surface and measures with extreme precision the time taken for the signal to bounce and return to the receiver. Conknowing the speed of light and the travel time, it is possible to calculate the exact distance between the satellite and the water surface. <br><br>To determine the height of the ocean relative to the center of the Earth, the satellite sends microwaves that bounce off the surface; by combining the return time with its precise orbital position (obtained via GPS and laser systems), scientists derive the local ocean height. Sentinel-6 is capable of measuring the sea surface with an accuracy of approximately 3 centimeters from an orbit at 1336 km altitude. Flying over the entire planet every 10 days, the satellite provides a complete map of ocean topography, identifying variations related to currents and temperature." 
+        testoMissione: "Sentinel-6 Michael Freilich stands as the global standard for long-term sea level measurements, expanding an uninterrupted oceanographic dataset initiated in 1992. Monitoring ocean topography is critical because marine waters trap over 90% of the Earth's excess heat, resulting in global thermal expansion and accelerated glacial melting.<br><br>The spacecraft utilizes a advanced dual-frequency radar altimeter to bounce microwave pulses off the water's surface. By matching the signal's travel duration with precise orbital GPS metrics and laser positioning networks, the system maps sea surface height variations down to an accuracy of 3 centimeters.<br><br>Orbiting at an altitude of 1,336 kilometers, Sentinel-6 maps the ice-free global oceans every 10 days. Its cloud-penetrating radar instruments allow oceanographers to accurately trace marine currents, forecast climate phenomena like El Niño, and deliver data to safeguard coastal zones."
     },
     2: { 
-        nomeIntero: "Ice, Cloud, and land Elevation Satellite-2",
-        storia: "ICESat-2 (Ice, Cloud, and land Elevation Satellite-2) maps the Earth's height with millimeter precision using laser pulses from space.", 
-        come: "Quantifying the mass balance of ice sheets represents a crucial challenge identified by the IPCC, as it directly affects predictions of global sea level change. ICESat-2 addresses this uncertainty by establishing a precise baseline before global warming further alters the balance. <br><br>Unlike conventional radars that have difficulty on inclined and crevassed surfaces, ICESat-2's ATLAS LIDAR is capable of measuring ice thickness changes of less than 1 cm per year. This sensitivity is vital for determining whether ice sheets are growing or shrinking, providing early signs of instability in critical areas such as West Antarctica. <br><br>By monitoring glacial flows, grounding lines, and the volume of perennial ice, the mission fills fundamental gaps in our understanding of the climate system, transforming unique lidar data into reliable global predictions.", 
-        perche: "ICESat-2 operates through the GLAS (Geoscience Laser Altimeter System) system, emitting ultra-short laser pulses capable of mapping the Earth with millimeter precision. The system uses LiDAR technology: it emits 40 pulses per second that strike the surface, creating 70-meter 'footprints.' By calculating the flight time of the photons that return to the satellite and cross-referencing the data with the orbital GPS position, the instrument measures elevation with an error of less than 15 cm. <br><br>In addition to ice, ICESat-2 penetrates vegetation to measure forest height and analyzes the vertical structure of clouds and aerosols, providing unique data on polar atmospheric dynamics even during long periods of winter darkness." 
+        nomeIntero: "Aura EOS CH-1",
+        testoMissione: "The Aura satellite is a core component of NASA's Earth Observing System, optimized to decode the chemical profiles of our atmosphere, track the stratospheric ozone layer, and monitor global air quality trends.<br><br>Operating in a sun-synchronous polar orbit, Aura maps how trace gases, industrial aerosols, and pollutants interact over multi-year scales. Its main payloads, the Ozone Monitoring Instrument (OMI) and the Microwave Limb Sounder (MLS), collect backscattered solar radiation and thermal emissions from the atmospheric boundary layer.<br><br>By processing specific ultra-violet and microwave absorption properties, Aura calculates global distributions of ozone, nitrogen dioxide, and sulfur dioxide. This inventory allows scientists to chart the seasonal evolution of polar ozone holes and verify if international emissions control acts, like the Montreal Protocol, are successfully reducing pollutant thresholds."
     },
     3: {
         nomeIntero: "Suomi National Polar-orbiting Partnership",
-        storia: "The Suomi NPP (National Polar-orbiting Partnership) satellite is the technological bridge between NASA's Earth Observing System missions and future weather satellites.",
-        come: "Precisely knowing the amount of ozone in our atmosphere is a matter of planetary security. Stratospheric ozone acts as a shield for the Earth, absorbing most of the harmful ultraviolet (UV-B) radiation from the Sun. <br><br>The utility of these data is reflected in three areas: <br>• Protection of human health: avoids the increase in skin cancers and immune system damage by monitoring 'holes' in the protective layer. <br>• Safeguarding ecosystems: excessive UV radiation damages phytoplankton and reduces crop yields. <br>• Verification of international treaties: allows for confirming if the Montreal Protocol is working, observing the healing of the ozone layer.",
-        perche: "Suomi NPP orbits the Earth 14 times a day from pole to pole using the OMPS (Ozone Mapping and Profiler Suite) instrument. <br><br>The operation is based on spectroscopy: the OMPS analyzes sunlight reflected from the Earth's surface and scattered by the atmosphere (backscattering). Since ozone absorbs ultraviolet light at specific wavelengths, the satellite measures how much of this light is 'missing' in the return signal."
+        testoMissione: "The Suomi National Polar-orbiting Partnership (Suomi NPP) serves as a critical environmental bridge linking legacy Earth observations with next-generation weather networks, scanning the planet from pole to pole 14 times a day.<br><br>A joint initiative between NASA and NOAA, the mission monitors changes in global ozone layers, cloud structures, and aerosol patterns using the OMPS and VIIRS instrument packages. Its sensors use backscattering spectroscopy to evaluate reflected ultraviolet and infrared light against direct solar outputs, showing exactly how much ozone is active in the protective column.<br><br>Suomi NPP is highly recognized for its 'Day/Night Band' imaging system, a sensor capable of collecting low-light emissions across the dark side of the globe. This grants meteorologists an uninterrupted window to trace nighttime storms, locate active wildfires, chart volcanic ash clouds, and evaluate global energy grids through city lights."
     },
     4: {
-        nomeIntero: "Aqua EOS Satellite",
-        storia: "Aqua is a multinational NASA mission aimed at studying the Earth's water cycle, collecting data on oceans, atmosphere, soil, and ice.",
-        come: "Aqua monitors the planet's water and energy balance by studying the atmosphere (humidity and clouds), the oceans (temperature and phytoplankton), sea ice, soil moisture, and precipitation. <br><br>The importance of this mission lies in improving weather forecasts and understanding global warming. Water vapor is the most abundant greenhouse gas; by monitoring it, Aqua helps to understand how temperatures influence the water cycle, causing droughts or floods. Furthermore, it detects the health of marine life and helps manage global water resources.",
-        perche: "Aqua operates in a sun-synchronous orbit that scans every point of the Earth at the same local time (about 1:30 PM). <br><br>The satellite uses a suite of hyperspectral and microwave instruments: <br>• AIRS: creates 3D maps of temperature and humidity by measuring infrared radiation. <br>• AMSR-E: penetrates clouds with microwaves to measure rain and soil moisture."
+        nomeIntero: "Aqua EOS PM-1",
+        testoMissione: "The Aqua satellite maps the components of Earth's water cycle, logging variations across global oceans, seasonal sea ice sheets, continental soil moisture levels, and the upper atmosphere.<br><br>Aqua maintains a sun-synchronous orbit designed to cross the equator at 1:30 PM local time, capturing atmospheric parameters during peak daylight convective activity. The probe deploys a coordinated matrix of hyperspectral and microwave sensors to compile these multi-phase climate vectors.<br><br>The Atmospheric Infrared Sounder (AIRS) captures thermal outputs to generate 3D atmospheric temperature profiles, while the AMSR-E microwave system pierces thick clouds to assess rainfall rates and surface soil wetness. Tracking atmospheric water vapor allows Aqua to model how warming trends disrupt historical precipitation patterns, sparking regional droughts or flood conditions."
     }
 };
 
 const frameLinks = [
     "https://eyes.nasa.gov/apps/earth/#/vital-signs/carbon-dioxide/oco-2-carbon-observatory-16day",
     "https://eyes.nasa.gov/apps/earth/#/vital-signs/sea-level",
-    "https://eyes.nasa.gov/apps/earth/#/vital-signs/ice/icesat2-arctic-ice-thickness",
+    "https://eyes.nasa.gov/apps/earth/#/vital-signs/ozone",
     "https://eyes.nasa.gov/apps/earth/#/vital-signs/ozone",
     "https://eyes.nasa.gov/apps/earth/#/vital-signs/water-vapor"
 ];
-
 
 function preload() { earthImg = loadImage('assets/imgs/earth albedo.jpg'); }
 
@@ -59,12 +48,14 @@ function setup() {
     mainCanvas.style('display', 'block');
     lookAt = createVector(0, 0, 0); targetLookAt = createVector(0, 0, 0);
     for (let i = 0; i < 900; i++) stars.push(createVector(random(-2000, 2000), random(-2000, 2000), random(-2000, 2000)));
+    
+    // Generazione vettoriale casuale basata sulla distanza orbitale sferica originaria
     satellites = [
-        { name: "OCO-2", pos: createVector(260, -70, 120), color: [255, 120, 50], specs: { agency: "NASA", launch: "02 Jul 2014", mass: "447 kg", orbit: "705 km", status: "Operational", size: "2.1m x 2.1m", cost: "$467.7M", life: "2 years" } },
-        { name: "SENTINEL-6", pos: createVector(-290, 60, -140), color: [100, 255, 200], specs: { agency: "ESA/NASA", launch: "21 Nov 2020", mass: "1192 kg", orbit: "1336 km", status: "Operational", size: "5.1m x 2.3m", cost: "$800M", life: "5.5 years" } },
-        { name: "ICESAT-2", pos: createVector(120, -300, 80), color: [100, 200, 255], specs: { agency: "NASA", launch: "15 Sep 2018", mass: "1387 kg", orbit: "496 km", status: "Operational", size: "4.1m x 2.1m", cost: "$1.06B", life: "3 years" } },
-        { name: "SUOMI NPP", pos: createVector(-150, 250, 180), color: [255, 100, 255], specs: { agency: "NASA/NOAA", launch: "28 Oct 2011", mass: "2128 kg", orbit: "824 km", status: "Operational", size: "4.3m x 2.5m", cost: "$1.5B", life: "5 years" } },
-        { name: "AQUA", pos: createVector(300, 100, -200), color: [100, 255, 100], specs: { agency: "NASA", launch: "04 May 2002", mass: "3117 kg", orbit: "705 km", status: "Operational", size: "4.8m x 16.7m", cost: "$952M", life: "6 years" } }
+        { name: "Oco-2", pos: p5.Vector.random3D().mult(Math.sqrt(260*260 + 70*70 + 120*120)), color: [255, 120, 50], specs: { agency: "NASA", launch: "02 Jul 2014", mass: "447 kg", orbit: "705 km", status: "Operational", size: "2.1m x 2.1m", cost: "$467.7M", life: "2 years" } },
+        { name: "Sentinel-6", pos: p5.Vector.random3D().mult(Math.sqrt(290*290 + 60*60 + 140*140)), color: [100, 255, 200], specs: { agency: "ESA/NASA", launch: "21 Nov 2020", mass: "1192 kg", orbit: "1336 km", status: "Operational", size: "5.1m x 2.3m", cost: "$800M", life: "5.5 years" } },
+        { name: "Aura", pos: p5.Vector.random3D().mult(Math.sqrt(120*120 + 300*300 + 80*80)), color: [255, 215, 0], specs: { agency: "NASA", launch: "15 Jul 2004", mass: "2967 kg", orbit: "705 km", status: "Operational", size: "4.7m x 17.0m", cost: "$785M", life: "5 years" } },
+        { name: "Suomi Npp", pos: p5.Vector.random3D().mult(Math.sqrt(150*150 + 250*250 + 180*180)), color: [255, 100, 255], specs: { agency: "NASA/NOAA", launch: "28 Oct 2011", mass: "2128 kg", orbit: "824 km", status: "Operational", size: "4.3m x 2.5m", cost: "$1.5B", life: "5 years" } },
+        { name: "Aqua", pos: p5.Vector.random3D().mult(Math.sqrt(300*300 + 100*100 + 200*200)), color: [100, 255, 100], specs: { agency: "NASA", launch: "04 May 2002", mass: "3117 kg", orbit: "705 km", status: "Operational", size: "4.8m x 16.7m", cost: "$952M", life: "6 years" } }
     ];
     generateNav();
 }
@@ -87,24 +78,17 @@ function draw() {
     if (isDetailPage || isSourcesPage) return; background(0);
     
     if (isInteracting && !mouseIsPressed) {
-        let currentClosest = -1;
-        let clickRadius = 45;
+        let currentClosest = -1; let clickRadius = 45;
         for (let i = 0; i < satellites.length; i++) {
             let p = getProjectedPosition(satellites[i].pos);
-            if (p.z > 0) { 
-                let d = dist(mouseX, mouseY, p.x, p.y);
-                if (d < clickRadius) { currentClosest = i; break; }
-            }
+            if (p.z > 0) { let d = dist(mouseX, mouseY, p.x, p.y); if (d < clickRadius) { currentClosest = i; break; } }
         }
         if (currentClosest !== -1) hoveredIndex = currentClosest;
     }
 
     document.querySelectorAll('.nav-btn').forEach((btn, idx) => {
-        if (idx === hoveredIndex) {
-            btn.classList.add('active');
-        } else if (idx !== selectedSatIndex) {
-            btn.classList.remove('active');
-        }
+        if (idx === hoveredIndex) btn.classList.add('active');
+        else if (idx !== selectedSatIndex) btn.classList.remove('active');
     });
 
     if (isInteracting && mouseIsPressed && mouseX > 450) { rotY += (mouseX - pmouseX) * 0.005; rotX -= (mouseY - pmouseY) * 0.005; }
@@ -114,9 +98,7 @@ function draw() {
     ambientLight(150); pointLight(255, 255, 255, 0, 0, camZ);
     push(); stroke(255); strokeWeight(1.5); for (let s of stars) point(s.x, s.y, s.z); pop();
     
-    push(); 
-    rotateX(rotX); 
-    rotateY(rotY); 
+    push(); rotateX(rotX); rotateY(rotY);
     push(); noStroke(); texture(earthImg); sphere(200); pop();
     
     for (let i = 0; i < satellites.length; i++) {
@@ -136,23 +118,20 @@ function drawOrbitMarker(position, isHovered) {
     pop();
 }
 
-function createDetailModel(satIndex) {}
-
-function startExperience() { document.getElementById('page-0').classList.add('hidden'); document.getElementById('ui-layer').classList.add('active'); isInteracting = true; }
+function startExperience() { 
+    document.getElementById('page-0').classList.add('hidden'); 
+    document.getElementById('ui-layer').classList.add('active'); 
+    isInteracting = true; 
+    const controlsBox = document.querySelector('.bottom-left-controls');
+    if (controlsBox) controlsBox.style.setProperty('display', 'flex', 'important');
+}
 
 function selectSatellite(index) { 
-    selectedSatIndex = index; 
+    selectedSatIndex = index; currentDetailSubPage = "tech"; 
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active')); 
     const targetBtn = document.getElementById('btn-' + index);
     if (targetBtn) targetBtn.classList.add('active'); 
-    
-    if (isDetailPage) {
-        updateDetailView(currentDetailSubPage);
-        generateDetailButtons();
-    } else {
-        currentDetailSubPage = "about";
-        setTimeout(openDetails, 500); 
-    }
+    if (isDetailPage) { updateDetailView(currentDetailSubPage); generateDetailButtons(); } else { setTimeout(openDetails, 500); }
 }
 
 function generateDetailButtons() {
@@ -169,56 +148,42 @@ function generateDetailButtons() {
 }
 
 function openDetails() { 
-    isDetailPage = true; 
-    updateDetailView(currentDetailSubPage); 
-    document.getElementById('detail-page').classList.add('active'); 
-    generateDetailButtons();
+    isDetailPage = true; updateDetailView(currentDetailSubPage); 
+    document.getElementById('detail-page').classList.add('active'); generateDetailButtons();
+    const controlsBox = document.querySelector('.bottom-left-controls');
+    if (controlsBox) controlsBox.style.setProperty('display', 'flex', 'important');
 }
 
-function closeDetails() { isDetailPage = false; document.getElementById('detail-page').classList.remove('active'); resetView(); }
-
-function resetView() { 
-    selectedSatIndex = -1; 
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active')); 
+function closeDetails() { 
+    isDetailPage = false; document.getElementById('detail-page').classList.remove('active'); resetView(); 
+    const controlsBox = document.querySelector('.bottom-left-controls');
+    if (controlsBox) controlsBox.style.setProperty('display', 'flex', 'important');
 }
 
-function openSources() { isSourcesPage = true; document.getElementById('sources-page').classList.add('active'); }
-function closeSources() { isSourcesPage = false; document.getElementById('sources-page').classList.remove('active'); }
+function resetView() { selectedSatIndex = -1; document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active')); }
+function openSources() { isSourcesPage = true; document.getElementById('sources-page').classList.add('active'); const controlsBox = document.querySelector('.bottom-left-controls'); if (controlsBox) controlsBox.style.display = 'none'; }
+function closeSources() { isSourcesPage = false; document.getElementById('sources-page').classList.remove('active'); const controlsBox = document.querySelector('.bottom-left-controls'); if (controlsBox) controlsBox.style.setProperty('display', 'flex', 'important'); }
 
 function updateDetailView(subPage) {
-    currentDetailSubPage = subPage;
-    const sat = satellites[selectedSatIndex]; 
-    const container = document.getElementById('detail-content');
-    
-    const textContainer = document.querySelector('.detail-text');
-    if (textContainer) {
-        let titleBlock = document.getElementById('detail-title-block');
-        if (!titleBlock) {
-            titleBlock = document.createElement('div');
-            titleBlock.id = 'detail-title-block';
-            textContainer.insertBefore(titleBlock, container);
-        }
-        
-        titleBlock.innerHTML = `
-            <h1 id="detail-title">${chapterData[selectedSatIndex].nomeIntero}</h1>
-            <div class="sub-page-tabs" style="margin-bottom: 30px; display: flex; gap: 15px;">
-                <button class="tab-toggle-btn ${subPage === 'about' ? 'active' : ''}" onclick="updateDetailView('about')" style="padding: 10px 20px; background: ${subPage === 'about' ? 'white' : 'transparent'}; color: ${subPage === 'about' ? 'black' : 'white'}; border: 1px solid white; cursor: pointer; font-size: 12px; font-weight: ${subPage === 'about' ? 'bold' : 'normal'}; text-transform: uppercase; transition: 0.3s;">About</button>
-                <button class="tab-toggle-btn ${subPage === 'tech' ? 'active' : ''}" onclick="updateDetailView('tech')" style="padding: 10px 20px; background: ${subPage === 'tech' ? 'white' : 'transparent'}; color: ${subPage === 'tech' ? 'black' : 'white'}; border: 1px solid white; cursor: pointer; font-size: 12px; font-weight: ${subPage === 'tech' ? 'bold' : 'normal'}; text-transform: uppercase; transition: 0.3s;">Technical Sheet</button>
-            </div>
-        `;
+    currentDetailSubPage = subPage; const sat = satellites[selectedSatIndex]; const container = document.getElementById('detail-content');
+    const titleEl = document.getElementById('detail-title');
+    if (titleEl) titleEl.textContent = chapterData[selectedSatIndex].nomeIntero;
+
+    const techBtn = document.getElementById('tab-btn-tech'); const aboutBtn = document.getElementById('tab-btn-about');
+    if (techBtn && aboutBtn) {
+        if (subPage === 'tech') { techBtn.classList.add('active'); aboutBtn.classList.remove('active'); } 
+        else { aboutBtn.classList.add('active'); techBtn.classList.remove('active'); }
     }
 
     if (!container) return;
 
     if (subPage === 'about') {
-        // MODIFICA: Assegnata la classe "about-media-box" per mantenere le dimensioni correnti dell'iframe
         container.innerHTML = `
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start;">
                 <div>
-                    <p style="margin-top: 0;">${chapterData[selectedSatIndex].storia}</p>
-                    <p>${chapterData[selectedSatIndex].come}</p>
+                    <p style="margin-top: 0; text-align: left;">${chapterData[selectedSatIndex].testoMissione}</p>
                 </div>
-                <div class="about-media-box" style="position: relative; width: 100%; height: 350px; border: none;">
+                <div class="about-media-box" style="position: relative; width: 100%; height: 350px;">
                     <div class="expand-hint">${labels.expand}</div>
                     <div style="position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer; z-index:15;" onclick="openExternalFrame()"></div>
                     <iframe src="${frameLinks[selectedSatIndex]}" style="width:100%; height:100%; border:none; pointer-events:none;"></iframe>
@@ -228,11 +193,10 @@ function updateDetailView(subPage) {
         let imgContent = "";
         if (selectedSatIndex === 0) imgContent = `assets/imgs/OCO2.png`;
         else if (selectedSatIndex === 1) imgContent = `assets/imgs/Sentinel6b.png`;
-        else if (selectedSatIndex === 2) imgContent = `assets/imgs/ICESat2.png`;
+        else if (selectedSatIndex === 2) imgContent = `assets/imgs/Aura.png`;
         else if (selectedSatIndex === 3) imgContent = `assets/imgs/SuomiNPP.png`;
         else if (selectedSatIndex === 4) imgContent = `assets/imgs/Aqua.png`;
 
-        // MODIFICA: Assegnata la classe "tech-media-box" per l'immagine del Technical Sheet, che verrà controllata separatamente nel CSS
         container.innerHTML = `
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px;">
@@ -250,15 +214,13 @@ function updateDetailView(subPage) {
                     </div>
                 </div>
                 <div class="tech-media-box" style="width: 100%;">
-                    <img src="${imgContent}" class="detail-side-img" style="width: 100%; height: 350px; object-fit: cover; border: none;">
+                    <img src="${imgContent}" class="detail-side-img" style="width: 100%; height: 350px; object-fit: cover;">
                 </div>
             </div>`;
     }
 }
 
 function openExternalFrame() { window.open(frameLinks[selectedSatIndex], '_blank'); }
-
-function changeChapter(key, btn) {}
 
 function getProjectedPosition(pos) {
     let x = pos.x; let y = pos.y; let z = pos.z;
