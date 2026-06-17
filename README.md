@@ -1,5 +1,3 @@
-<img width="1512" height="855" alt="0_screen1" src="https://github.com/user-attachments/assets/772972ce-ae13-49df-963c-b47d6fe22ac4" />
-<img width="1512" height="855" alt="0_screen1" src="https://github.com/user-attachments/assets/6d10640d-0598-4330-8c42-ee275ee8fe71" />
 ¨SUPSI 2026  
 Corso d’interaction design, CV429.01  
 Docenti: A. Gysin, G. Profeta  
