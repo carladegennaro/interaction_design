@@ -43,8 +43,9 @@ https://github.com/user-attachments/assets/c9126743-8da4-469c-bf54-5e9317b5e102
 ## Tecnologia usata
 Il progetto è sviluppato interamente lato client sfruttando la combinazione di codice JavaScript nativo e la libreria p5.js in modalità WEBGL. Quest'ultima gestisce l'ambiente tridimensionale, calcolando la rotazione della sfera terrestre sul piano cartesiano e la posizione dei vettori dei cinque satelliti. I metadati e le descrizioni scientifiche sono salvati localmente in strutture matriciali all'interno dello script, eliminando la necessità di chiamate a database esterni e velocizzando i flussi di caricamento della pagina.
  
-// Rilevamento del mouse hover sui satelliti tridimensionali nel canvas
+
 ```JavaScript
+// Rilevamento del mouse hover sui satelliti tridimensionali nel canvas
 if (isInteracting && !mouseIsPressed) {
     let currentClosest = -1; 
     let clickRadius = 45; // Raggio geometrico di tolleranza in pixel
