@@ -1,5 +1,5 @@
 let earthImg, models = [], textures = [], stars = [], satellites = [];
-let isInteracting = false, isDetailPage = false, isSourcesPage = false;
+let isInteracting = false, isDetailPage = false, isSourcesPage = false, isAboutPage = false;
 let rotX = 0, rotY = 180, camZ = 1000, targetCamZ = 1000;
 let lookAt, targetLookAt, selectedSatIndex = -1, hoveredIndex = -1;
 let currentDetailSubPage = "tech"; 
@@ -12,11 +12,11 @@ const labels = {
 
 const chapterData = {
     0: { 
-        nomeIntero: "Orbiting Carbon Observatory-2 (OCO-2)",
+        nomeIntero: "Orbiting Carbon Observatory-2",
         testoMissione: "The Orbiting Carbon Observatory-2 (OCO-2) is NASA's premier mission for mapping global atmospheric carbon dioxide (CO₂). By tracking carbon concentrations over time, the satellite helps isolate structural greenhouse fluctuations and pinpoint exactly where carbon is released or absorbed worldwide.<br><br>The satellite relies on three high-resolution spectrometers that measure the absorption lines of sunlight reflected off the Earth. As light passes through the atmosphere, CO₂ and oxygen molecules filter specific spectral frequencies. OCO-2 decodes these signals to evaluate carbon concentrations with a precision of 1 part per million (ppm).<br><br>Additionally, OCO-2 records Sun-Induced Fluorescence (SIF), a faint light emitted by plants during photosynthesis. This metric acts as a real-time health indicator for global vegetation, helping scientists observe how terrestrial carbon sinks react to climate stress and changing industrial emissions."
     },
     1: { 
-        nomeIntero: "Sentinel-6 Michael Freilich",
+        nomeIntero: "Sentinel-6                     Michael Freilich",
         testoMissione: "Sentinel-6 Michael Freilich stands as the global standard for long-term sea level measurements, expanding an uninterrupted oceanographic dataset initiated in 1992. Monitoring ocean topography is critical because marine waters trap over 90% of the Earth's excess heat, resulting in global thermal expansion and accelerated glacial melting.<br><br>The spacecraft utilizes a advanced dual-frequency radar altimeter to bounce microwave pulses off the water's surface. By matching the signal's travel duration with precise orbital GPS metrics and laser positioning networks, the system maps sea surface height variations down to an accuracy of 3 centimeters.<br><br>Orbiting at an altitude of 1,336 kilometers, Sentinel-6 maps the ice-free global oceans every 10 days. Its cloud-penetrating radar instruments allow oceanographers to accurately trace marine currents, forecast climate phenomena like El Niño, and deliver data to safeguard coastal zones."
     },
     2: { 
@@ -24,7 +24,7 @@ const chapterData = {
         testoMissione: "The Aura satellite is a core component of NASA's Earth Observing System, optimized to decode the chemical profiles of our atmosphere, track the stratospheric ozone layer, and monitor global air quality trends.<br><br>Operating in a sun-synchronous polar orbit, Aura maps how trace gases, industrial aerosols, and pollutants interact over multi-year scales. Its main payloads, the Ozone Monitoring Instrument (OMI) and the Microwave Limb Sounder (MLS), collect backscattered solar radiation and thermal emissions from the atmospheric boundary layer.<br><br>By processing specific ultra-violet and microwave absorption properties, Aura calculates global distributions of ozone, nitrogen dioxide, and sulfur dioxide. This inventory allows scientists to chart the seasonal evolution of polar ozone holes and verify if international emissions control acts, like the Montreal Protocol, are successfully reducing pollutant thresholds."
     },
     3: {
-        nomeIntero: "Suomi National Polar-orbiting Partnership",
+        nomeIntero: "Suomi National                Polar-orbiting Partnership",
         testoMissione: "The Suomi National Polar-orbiting Partnership (Suomi NPP) serves as a critical environmental bridge linking legacy Earth observations with next-generation weather networks, scanning the planet from pole to pole 14 times a day.<br><br>A joint initiative between NASA and NOAA, the mission monitors changes in global ozone layers, cloud structures, and aerosol patterns using the OMPS and VIIRS instrument packages. Its sensors use backscattering spectroscopy to evaluate reflected ultraviolet and infrared light against direct solar outputs, showing exactly how much ozone is active in the protective column.<br><br>Suomi NPP is highly recognized for its 'Day/Night Band' imaging system, a sensor capable of collecting low-light emissions across the dark side of the globe. This grants meteorologists an uninterrupted window to trace nighttime storms, locate active wildfires, chart volcanic ash clouds, and evaluate global energy grids through city lights."
     },
     4: {
@@ -48,14 +48,12 @@ function setup() {
     mainCanvas.style('display', 'block');
     lookAt = createVector(0, 0, 0); targetLookAt = createVector(0, 0, 0);
     for (let i = 0; i < 900; i++) stars.push(createVector(random(-2000, 2000), random(-2000, 2000), random(-2000, 2000)));
-    
-    // Generazione vettoriale casuale basata sulla distanza orbitale sferica originaria
     satellites = [
-        { name: "Oco-2", pos: p5.Vector.random3D().mult(Math.sqrt(260*260 + 70*70 + 120*120)), color: [255, 120, 50], specs: { agency: "NASA", launch: "02 Jul 2014", mass: "447 kg", orbit: "705 km", status: "Operational", size: "2.1m x 2.1m", cost: "$467.7M", life: "2 years" } },
-        { name: "Sentinel-6", pos: p5.Vector.random3D().mult(Math.sqrt(290*290 + 60*60 + 140*140)), color: [100, 255, 200], specs: { agency: "ESA/NASA", launch: "21 Nov 2020", mass: "1192 kg", orbit: "1336 km", status: "Operational", size: "5.1m x 2.3m", cost: "$800M", life: "5.5 years" } },
-        { name: "Aura", pos: p5.Vector.random3D().mult(Math.sqrt(120*120 + 300*300 + 80*80)), color: [255, 215, 0], specs: { agency: "NASA", launch: "15 Jul 2004", mass: "2967 kg", orbit: "705 km", status: "Operational", size: "4.7m x 17.0m", cost: "$785M", life: "5 years" } },
-        { name: "Suomi Npp", pos: p5.Vector.random3D().mult(Math.sqrt(150*150 + 250*250 + 180*180)), color: [255, 100, 255], specs: { agency: "NASA/NOAA", launch: "28 Oct 2011", mass: "2128 kg", orbit: "824 km", status: "Operational", size: "4.3m x 2.5m", cost: "$1.5B", life: "5 years" } },
-        { name: "Aqua", pos: p5.Vector.random3D().mult(Math.sqrt(300*300 + 100*100 + 200*200)), color: [100, 255, 100], specs: { agency: "NASA", launch: "04 May 2002", mass: "3117 kg", orbit: "705 km", status: "Operational", size: "4.8m x 16.7m", cost: "$952M", life: "6 years" } }
+        { name: "Oco-2", pos: createVector(260, -70, 120), color: [255, 120, 50], specs: { agency: "NASA", launch: "02 Jul 2014", mass: "447 kg", orbit: "705 km", status: "Operational", size: "2.1m x 2.1m", cost: "$467.7M", life: "2 years" } },
+        { name: "Sentinel-6", pos: createVector(-290, 60, -140), color: [100, 255, 200], specs: { agency: "ESA/NASA", launch: "21 Nov 2020", mass: "1192 kg", orbit: "1336 km", status: "Operational", size: "5.1m x 2.3m", cost: "$800M", life: "5.5 years" } },
+        { name: "Aura", pos: createVector(120, -300, 80), color: [255, 215, 0], specs: { agency: "NASA", launch: "15 Jul 2004", mass: "2967 kg", orbit: "705 km", status: "Operational", size: "4.7m x 17.0m", cost: "$785M", life: "5 years" } },
+        { name: "Suomi Npp", pos: createVector(-150, 250, 180), color: [255, 100, 255], specs: { agency: "NASA/NOAA", launch: "28 Oct 2011", mass: "2128 kg", orbit: "824 km", status: "Operational", size: "4.3m x 2.5m", cost: "$1.5B", life: "5 years" } },
+        { name: "Aqua", pos: createVector(300, 100, -200), color: [100, 255, 100], specs: { agency: "NASA", launch: "04 May 2002", mass: "3117 kg", orbit: "705 km", status: "Operational", size: "4.8m x 16.7m", cost: "$952M", life: "6 years" } }
     ];
     generateNav();
 }
@@ -75,7 +73,7 @@ function generateNav() {
 }
 
 function draw() {
-    if (isDetailPage || isSourcesPage) return; background(0);
+    if (isDetailPage || isSourcesPage || isAboutPage) return; background(0);
     
     if (isInteracting && !mouseIsPressed) {
         let currentClosest = -1; let clickRadius = 45;
@@ -95,7 +93,7 @@ function draw() {
     camZ = lerp(camZ, targetCamZ, 0.08);
     lookAt.x = lerp(lookAt.x, targetLookAt.x, 0.08); lookAt.y = lerp(lookAt.y, targetLookAt.y, 0.08); lookAt.z = lerp(lookAt.z, targetLookAt.z, 0.08);
     camera(0, 0, camZ, lookAt.x, lookAt.y, lookAt.z, 0, 1, 0);
-    ambientLight(150); pointLight(255, 255, 255, 0, 0, camZ);
+    ambientLight(200); pointLight(255, 255, 255, 0, 0, camZ);
     push(); stroke(255); strokeWeight(1.5); for (let s of stars) point(s.x, s.y, s.z); pop();
     
     push(); rotateX(rotX); rotateY(rotY);
@@ -161,6 +159,25 @@ function closeDetails() {
 }
 
 function resetView() { selectedSatIndex = -1; document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active')); }
+
+// Nuove funzioni per la gestione della pagina About separate
+function openAbout() { 
+    isAboutPage = true; 
+    document.getElementById('about-page').style.display = 'grid'; 
+    document.getElementById('about-page').style.gridTemplateColumns = 'repeat(12, 1fr)';
+    document.getElementById('about-page').style.gap = '20px';
+    document.getElementById('about-page').style.alignItems = 'start';
+    const controlsBox = document.querySelector('.bottom-left-controls'); 
+    if (controlsBox) controlsBox.style.display = 'none'; 
+}
+
+function closeAbout() { 
+    isAboutPage = false; 
+    document.getElementById('about-page').style.display = 'none'; 
+    const controlsBox = document.querySelector('.bottom-left-controls'); 
+    if (controlsBox) controlsBox.style.setProperty('display', 'flex', 'important'); 
+}
+
 function openSources() { isSourcesPage = true; document.getElementById('sources-page').classList.add('active'); const controlsBox = document.querySelector('.bottom-left-controls'); if (controlsBox) controlsBox.style.display = 'none'; }
 function closeSources() { isSourcesPage = false; document.getElementById('sources-page').classList.remove('active'); const controlsBox = document.querySelector('.bottom-left-controls'); if (controlsBox) controlsBox.style.setProperty('display', 'flex', 'important'); }
 
@@ -235,7 +252,7 @@ function getProjectedPosition(pos) {
 }
 
 function mouseClicked() {
-    if (isDetailPage || isSourcesPage || !isInteracting) return;
+    if (isDetailPage || isSourcesPage || isAboutPage || !isInteracting) return;
     let closest = -1; let clickRadius = 45; 
     for (let i = 0; i < satellites.length; i++) {
         let p = getProjectedPosition(satellites[i].pos);

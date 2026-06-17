@@ -13,7 +13,7 @@
         <div class="p0-title-container">
             <h1 class="p0-title">Eyes on<br>Earth</h1>
             <div class="p0-content">
-                <p class="p0-desc" id="p0-desc-text">On the occasion of NASA's seventieth anniversary, founded in 1958, this project explores the agency's digital archives to highlight the importance of aerospace technology in monitoring our planet's health. By navigating through five key satellites, you will discover how the conquest of space has become the fundamental tool for understanding global changes. Start your journey to see Earth as you have never seen it before.</p>
+                <p class="p0-desc" id="p0-desc-text">Developed on the occasion of NASA's 70th anniversary, this project examines the ongoing impact of climate change through the study of five key Earth-observing satellites. The initiative is designed to illustrate how these spacecraft operate and why their data is so important for scientific research and for monitoring our planet’s health.</p>
                 <button class="explore-btn" id="explore-btn-text" onclick="startExperience()">Explore</button>
             </div>
         </div>
@@ -27,46 +27,56 @@
     </div>
 
     <div class="bottom-left-controls">
-        <div class="info-square" onclick="document.getElementById('page-0').classList.remove('hidden')">About</div>
+        <div class="info-square" onclick="openAbout()">About</div>
         <div class="info-square" onclick="openSources()">Sources</div>
+    </div>
+
+    <div id="about-page" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; z-index: 400; display: none; box-sizing: border-box; padding: 120px 40px 40px 40px; overflow-y: auto;">
+        <button class="back-btn back-txt" onclick="closeAbout()">← Back</button>
+        <div class="sources-content">
+            <h1>About</h1>
+            <div class="source-group">
+                <p style="font-size: 14px; line-height: 1.8; color: white; opacity: 0.8; text-align: left;">Developed on the occasion of NASA's 70th anniversary, this project examines the ongoing impact of climate change through the study of five key Earth-observing satellites. The initiative is designed to illustrate how these spacecraft operate <br> and why their data is so important for scientific research and for monitoring our planet’s health.</p>
+            </div>
+        </div>
     </div>
 
     <div id="sources-page">
         <button class="back-btn back-txt" onclick="closeSources()">← Back</button>
         <div class="sources-content">
-            <h1 id="sources-title-text">Sources</h1>
+            <h1 id="sources-title-text">Sources</h1> <br>
             
             <div class="source-group"><b>Mission visualisation</b>
-                <a href="https://eyes.nasa.gov/apps/earth/#/satellites" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Eyes on the Earth</i>. Retrieved June 17, 2026, from https://eyes.nasa.gov/apps/earth/</a>
+                <a href="https://eyes.nasa.gov/apps/earth/#/satellites" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Eyes on the Earth</i>. Visual Sign of the Planet. https://eyes.nasa.gov/apps/earth/</a>
             </div>
 
             <div class="source-group"><b>Iconography</b>
-                <a href="https://eyes.nasa.gov/apps/solar-system/#/sc_aura" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Eyes on the solar system</i>. Retrieved June 17, 2026, from https://eyes.nasa.gov/apps/solar-system/#/sc_aura</a>
+                <a href="https://eyes.nasa.gov/apps/solar-system/#/sc_aura" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Eyes on the Solar System</i>. https://eyes.nasa.gov/apps/solar-system/#/sc_aura</a>
             </div>
             
             <div class="source-group"><b>Oco-2</b>
                 <a href="https://ocov2.jpl.nasa.gov" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Orbiting Carbon Observatory-2: Science overview</i>. Jet Propulsion Laboratory. https://ocov2.jpl.nasa.gov</a>
-                <a href="https://www.jpl.nasa.gov/news/press_kits/oco2-launch-press-kit.pdf" class="source-link" target="_blank">National Aeronautics and Space Administration. (2014). <i>OCO-2 launch press kit</i>. Jet Propulsion Laboratory. https://www.jpl.nasa.gov/news/press_kits/oco2-launch-press-kit.pdf</a>
+                <a href="https://doi.org/10.5194/amt-11-4715-2018" class="source-link" target="_blank">Eldering, A., O'Dell, C. W., Wennberg, P. O., Crisp, D., Gunson, M. R., Viatte, C., & OCO-2 Science Team. (2018). The Orbiting Carbon Observatory-2: First year of data and science highlights. <i>Atmospheric Measurement Techniques</i>, 11(8), 4715–4740. https://doi.org/10.5194/amt-11-4715-2018</a>
             </div>
 
-            <div class="source-group"><b>Sentinel-6b</b>
+            <div class="source-group"><b>Sentinel-6 Michael Freilich</b>
                 <a href="https://www.nasa.gov/sentinel-6" class="source-link" target="_blank">National Aeronautics and Space Administration. (2020). <i>Sentinel-6 Michael Freilich launch press kit</i>. NASA Science. https://www.nasa.gov/sentinel-6</a>
-                <a href="https://doi.org/10.1109/TGRS.2021.3102456" class="source-link" target="_blank">Donlon, C., Berruti, B., Buongiorno, A., & Sentinel-6 Team. (2021). The Copernicus Sentinel-6 mission: Sea-level altimetry for climate monitoring. <i>IEEE Transactions on Geoscience and Remote Sensing</i>, <i>59</i>(11), 9002–9018. https://doi.org/10.1109/TGRS.2021.3102456</a>
+                <a href="https://doi.org/10.1109/TGRS.2021.3102456" class="source-link" target="_blank">Donlon, C., Berruti, B., Buongiorno, A., & Sentinel-6 Team. (2021). The Copernicus Sentinel-6 mission: Sea-level altimetry for climate monitoring. <i>IEEE Transactions on Geoscience and Remote Sensing</i>, 59(11), 9002–9018. https://doi.org/10.1109/TGRS.2021.3102456</a>
             </div>
 
             <div class="source-group"><b>Aura</b>
                 <a href="https://aura.gsfc.nasa.gov/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Aura atmospheric chemistry mission</i>. Goddard Space Flight Center. https://aura.gsfc.nasa.gov/</a>
-                <a href="https://doi.org/10.1109/TGRS.2005.862267" class="source-link" target="_blank">Schoeberl, M. R., Douglass, A. R., Hilsenrath, E., Bhartia, P. K., Beer, R., Waters, J. W., ... & Gille, J. C. (2006). Earth Observing System Aura mission overview. <i>IEEE Transactions on Geoscience and Remote Sensing</i>, <i>44</i>(5), 1166–1174. https://doi.org/10.1109/TGRS.2005.862267</a>
+                <a href="https://doi.org/10.1109/TGRS.2005.862267" class="source-link" target="_blank">Schoeberl, M. R., Douglass, A. R., Hilsenrath, E., Bhartia, P. K., Beer, R., Waters, J. W., ... & Gille, J. C. (2006). Earth Observing System Aura mission overview. <i>IEEE Transactions on Geoscience and Remote Sensing</i>, 44(5), 1166–1174. https://doi.org/10.1109/TGRS.2005.862267</a>
             </div>
 
             <div class="source-group"><b>Suomi Npp</b>
-                <a href="https://science.nasa.gov/mission/suomi-npp/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Suomi National Polar-orbiting Partnership</i>. NASA Science Missions. https://science.nasa.gov/mission/suomi-npp/</a>
-                <a href="https://doi.org/10.1029/2012JD018745" class="source-link" target="_blank">Justice, C. O., Román, M. O., Csiszar, I., Vermote, E. F., Wolfe, R. E., Hook, S. J., ... & Tasumi, M. (2013). Land and cryosphere products from Suomi NPP VIIRS: Context and initial evaluation. <i>Journal of Geophysical Research: Atmospheres</i>, <i>118</i>(17), 9753–9770. https://doi.org/10.1029/2012JD018745</a>
+                <a href="https://science.nasa.gov/mission/suomi-npp/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Suomi National Polar-orbiting Partnership</i>. NASA Science missions. https://science.nasa.gov/mission/suomi-npp/</a>
+                <a href="https://doi.org/10.1029/2012JD018745" class="source-link" target="_blank">Justice, C. O., Román, M. O., Csiszar, I., Vermote, E. F., Wolfe, R. E., Hook, S. J., ... & Tasumi, M. (2013). Land and cryosphere products from Suomi NPP VIIRS: Context and initial evaluation. <i>Journal of Geophysical Research: Atmospheres</i>, 118(17), 9753–9770. https://doi.org/10.1029/2012JD018745</a>
             </div>
 
             <div class="source-group"><b>Aqua</b>
-                <a href="https://airs.jpl.nasa.gov/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Atmospheric Infrared Sounder: Aqua mission</i>. Jet Propulsion Laboratory. https://airs.jpl.nasa.gov/</a>
-                <a href="https://doi.org/10.1109/TGRS.2002.808351" class="source-link" target="_blank">Parkinson, C. L. (2003). Aqua: An Earth Observing System satellite dedicated to the study of Earth's water cycle. <i>IEEE Transactions on Geoscience and Remote Sensing</i>, <i>41</i>(2), 173–183. https://doi.org/10.1109/TGRS.2002.808351</a>
+                <a href="https://airs.jpl.nasa.gov/" class="source-link" target="_blank">National Aeronautics and Space Administration. (n.d.). <i>Atmospheric Infrared Sounder: Aqua Mission</i>. Jet Propulsion Laboratory. https://airs.jpl.nasa.gov/</a>
+                <a href="https://doi.org/10.1109/TGRS.2002.808351" class="source-link" target="_blank">Parkinson, C. L. (2003). Aqua: An Earth Observing System satellite dedicated to the study of Earth's water cycle. <i>IEEE Transactions on Geoscience and Remote Sensing</i>, 41(2), 173–183. https://doi.org/10.1109/TGRS.2002.808351</a>
             </div>
         </div>
     </div>
@@ -78,12 +88,10 @@
             <div id="detail-title-block">
                 <h1 id="detail-title">Name</h1>
             </div>
-            
             <div class="sub-page-tabs">
                 <button id="tab-btn-tech" class="tab-toggle-btn" onclick="updateDetailView('tech')">Data</button>
                 <button id="tab-btn-about" class="tab-toggle-btn" onclick="updateDetailView('about')">Mission</button>
             </div>
-            
             <div id="detail-content" class="tech-info-block"></div>
         </div>
     </div>
