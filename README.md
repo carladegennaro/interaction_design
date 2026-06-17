@@ -41,32 +41,27 @@ https://github.com/user-attachments/assets/c9126743-8da4-469c-bf54-5e9317b5e102
 
 
 ## Tecnologia usata
-- Dati locali e Loghi: le informazioni tecniche e i riferimenti alle agenzie sono archiviati in oggetti JavaScript locali (satellites, chapterData), permettendo un caricamento istantaneo senza dipendere da database esterni.
-- Integrazione Iframe: visualizzazione dinamica di applicazioni NASA pre-esistenti per la consultazione dei "Vital Signs" del pianeta.
+Il progetto è sviluppato interamente lato client sfruttando la combinazione di codice JavaScript nativo e la libreria p5.js in modalità WEBGL. Quest'ultima gestisce l'ambiente tridimensionale, calcolando la rotazione della sfera terrestre sul piano cartesiano e la posizione dei vettori dei cinque satelliti. I metadati e le descrizioni scientifiche sono salvati localmente in strutture matriciali all'interno dello script, eliminando la necessità di chiamate a database esterni e velocizzando i flussi di caricamento della pagina.
 
 
 ```JavaScript
-const image = new Image();
-image.onload = () => {
-	gl.bindTexture(gl.TEXTURE_2D, texture);
-	gl.texImage2D(
-		gl.TEXTURE_2D,
-		level,
-		internalFormat,
-		srcFormat,
-		srcType,
-		image
-	);
-	if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-		gl.generateMipmap(gl.TEXTURE_2D);
-	} else {
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-	}
-};
-image.src = url;
+if (isInteracting && !mouseIsPressed) {
+    let currentClosest = -1; 
+    let clickRadius = 45; // Raggio geometrico di tolleranza in pixel
+    
+    for (let i = 0; i < satellites.length; i++) {
+        let p = getProjectedPosition(satellites[i].pos);
+        if (p.z > 0) { 
+            let d = dist(mouseX, mouseY, p.x, p.y); 
+            if (d < clickRadius) { 
+                currentClosest = i; 
+                break; 
+            } 
+        }
+    }
+    if (currentClosest !== -1) hoveredIndex = currentClosest;
+}
 ```
 
 ## Target e contesto d’uso
-Il progetto si rivolge a un pubblico generalista, ovvero persone non necessariamente esperte di ingegneria aerospaziale, ma accomunate da un forte interesse per l’astronomia, le tecnologie NASA e le tematiche ambientali.
+Il progetto si rivolge a un pubblico generalista, ovvero persone non necessariamente esperte di ingegneria aerospaziale, ma accomunate da un forte interesse per l’astronomia, le tecnologie NASA e le tematiche ambientali. Per questo target, l'esperienza ideale si sviluppa attraverso una consultazione da postazione desktop, in cui muoversi liberamente e con i propri tempi. L'interfaccia a caselle permette all'utente di selezionare un satellite sia dal menu laterale sia dal canvas tridimensionale per consultare i dati descrittivi e, se necessario, approfondire il percorso di ricerca attraverso il link della visualizzazione della Terra che reindirizza direttamente all'applicazione ufficiale della NASA.
