@@ -1,3 +1,5 @@
+<img width="1512" height="855" alt="0_screen1" src="https://github.com/user-attachments/assets/772972ce-ae13-49df-963c-b47d6fe22ac4" />
+<img width="1512" height="855" alt="0_screen1" src="https://github.com/user-attachments/assets/6d10640d-0598-4330-8c42-ee275ee8fe71" />
 ¨SUPSI 2026  
 Corso d’interaction design, CV429.01  
 Docenti: A. Gysin, G. Profeta  
@@ -32,10 +34,10 @@ Sistema di Dettaglio. Cliccando su un satellite, l'interfaccia si trasforma in u
 
 https://github.com/user-attachments/assets/c9126743-8da4-469c-bf54-5e9317b5e102
 
-<img width="464" height="454" alt="0_screen2" src="https://github.com/user-attachments/assets/c3c5d942-2fdb-4968-bdfc-b57bb191c811" />
+
 <img width="464" height="454" alt="0_screen2" src="https://github.com/user-attachments/assets/31759482-243d-4d01-8974-1bd1ce2cfb44" />
 <img width="777" height="640" alt="0_screen3" src="https://github.com/user-attachments/assets/88900021-96f4-474b-b939-864ded3a74ee" />
-
+<img width="1512" height="855" alt="0_screen1" src="https://github.com/user-attachments/assets/c8eedfe4-4f4b-49f0-8c71-34582f4076cd" />
 
 
 
