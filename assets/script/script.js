@@ -13,11 +13,11 @@ const labels = {
 const chapterData = {
     0: { 
         nomeIntero: "Orbiting Carbon Observatory-2",
-        testoMissione: "The Orbiting Carbon Observatory-2 (OCO-2) is NASA's premier mission for mapping global atmospheric carbon dioxide (CO₂). By tracking carbon concentrations over time, the satellite helps isolate structural greenhouse fluctuations and pinpoint exactly where carbon is released or absorbed worldwide.<br><br>The satellite relies on three high-resolution spectrometers that measure the absorption lines of sunlight reflected off the Earth. As light passes through the atmosphere, CO₂ and oxygen molecules filter specific spectral frequencies. OCO-2 decodes these signals to evaluate carbon concentrations with a precision of 1 part per million (ppm).<br><br>Additionally, OCO-2 records Sun-Induced Fluorescence (SIF), a faint light emitted by plants during photosynthesis. This metric acts as a real-time health indicator for global vegetation, helping scientists observe how terrestrial carbon sinks react to climate stress and changing industrial emissions."
+        testoMissione: "The Orbiting Carbon Observatory-2 (OCO-2) is NASA's premier mission for mapping global atmospheric carbon dioxide (CO₂). By tracking carbon concentrations over time, the satellite helps isolate structural greenhouse fluctuations and pinpoint exactly where carbon is released or absorbed worldwide.<br><br>The satellite relies on three high-resolution spectrometers that measure the absorption lines of sunlight reflected off the Earth. As light passes through the atmosphere, CO₂ and <br> oxygen molecules filter specific spectral frequencies. OCO-2 decodes these signals to evaluate carbon concentrations with a precision of 1 part per million (ppm).<br><br>Additionally, OCO-2 records Sun-Induced Fluorescence (SIF), a faint light emitted by plants during photosynthesis. This metric acts as a real-time health indicator for global vegetation, helping scientists observe how terrestrial carbon sinks react to climate stress and changing industrial emissions."
     },
     1: { 
         nomeIntero: "Sentinel-6                     Michael Freilich",
-        testoMissione: "Sentinel-6 Michael Freilich stands as the global standard for long-term sea level measurements, expanding an uninterrupted oceanographic dataset initiated in 1992. Monitoring ocean topography is critical because marine waters trap over 90% of the Earth's excess heat, resulting in global thermal expansion and accelerated glacial melting.<br><br>The spacecraft utilizes a advanced dual-frequency radar altimeter to bounce microwave pulses off the water's surface. By matching the signal's travel duration with precise orbital GPS metrics and laser positioning networks, the system maps sea surface height variations down to an accuracy of 3 centimeters.<br><br>Orbiting at an altitude of 1,336 kilometers, Sentinel-6 maps the ice-free global oceans every 10 days. Its cloud-penetrating radar instruments allow oceanographers to accurately trace marine currents, forecast climate phenomena like El Niño, and deliver data to safeguard coastal zones."
+        testoMissione: "Sentinel-6 Michael Freilich stands as the global standard for long-term sea level measurements, expanding an uninterrupted oceanographic dataset initiated in <br> 1992. Monitoring ocean topography is critical because marine waters trap over 90% of the Earth's excess heat, resulting in global thermal expansion and accelerated glacial melting.<br><br>The spacecraft utilizes a advanced dual-frequency radar altimeter to bounce microwave pulses off the water's surface. By matching the signal's travel duration with precise orbital GPS metrics and laser positioning networks, the system maps sea surface height variations down to an accuracy of 3 centimeters.<br><br>Orbiting at an altitude of 1,336 kilometers, Sentinel-6 maps the ice-free global oceans every 10 days. Its cloud-penetrating radar instruments allow oceanographers to accurately trace marine currents, forecast climate phenomena like El Niño, and deliver data to safeguard coastal zones."
     },
     2: { 
         nomeIntero: "Aura EOS CH-1",
@@ -36,7 +36,7 @@ const chapterData = {
 const frameLinks = [
     "https://eyes.nasa.gov/apps/earth/#/vital-signs/carbon-dioxide/oco-2-carbon-observatory-16day",
     "https://eyes.nasa.gov/apps/earth/#/vital-signs/sea-level",
-    "https://eyes.nasa.gov/apps/earth/#/vital-signs/ozone",
+    "https://eyes.nasa.gov/apps/earth/#/vital-signs/nitrous-oxide/mls-stratosphere-n2o-7day",
     "https://eyes.nasa.gov/apps/earth/#/vital-signs/ozone",
     "https://eyes.nasa.gov/apps/earth/#/vital-signs/water-vapor"
 ];
@@ -67,13 +67,14 @@ function generateNav() {
         item.onmouseenter = () => { hoveredIndex = i; };
         item.onmouseleave = () => { hoveredIndex = -1; };
         item.innerHTML = `<button class="nav-btn" onclick="selectSatellite(${i})" id="btn-${i}">${sat.name}</button>
-            <div class="tech-preview tech-info-block"><b>${labels.agency}</b><span>${sat.specs.agency}</span><b>${labels.launch}</b><span>${sat.specs.launch}</span><b>${labels.mass}</b><span>${sat.specs.mass}</span><b>${labels.orbit}</b><span>${sat.specs.orbit}</span></div>`;
+            <div class="tech-preview tech-info-block"><div class="data-row"><b>${labels.agency}</b><span>${sat.specs.agency}</span></div><div class="data-row"><b>${labels.launch}</b><span>${sat.specs.launch}</span></div><div class="data-row"><b>${labels.mass}</b><span>${sat.specs.mass}</span></div><div class="data-row"><b>${labels.orbit}</b><span>${sat.specs.orbit}</span></div></div>`;
         container.appendChild(item);
     });
 }
 
 function draw() {
-    if (isDetailPage || isSourcesPage || isAboutPage) return; background(0);
+    background(0);
+    if (isDetailPage || isSourcesPage || isAboutPage) return;
     
     if (isInteracting && !mouseIsPressed) {
         let currentClosest = -1; let clickRadius = 45;
@@ -138,7 +139,7 @@ function generateDetailButtons() {
         tabContainer.innerHTML = "";
         satellites.forEach((sat, i) => {
             const item = document.createElement('div');
-            item.className = 'nav-item';
+            item.className = 'chapter-item';
             item.innerHTML = `<button class="chapter-btn ${i === selectedSatIndex ? 'active' : ''}" onclick="selectSatellite(${i})">${sat.name}</button>`;
             tabContainer.appendChild(item);
         });
@@ -160,20 +161,16 @@ function closeDetails() {
 
 function resetView() { selectedSatIndex = -1; document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active')); }
 
-// Nuove funzioni per la gestione della pagina About separate
 function openAbout() { 
     isAboutPage = true; 
-    document.getElementById('about-page').style.display = 'grid'; 
-    document.getElementById('about-page').style.gridTemplateColumns = 'repeat(12, 1fr)';
-    document.getElementById('about-page').style.gap = '20px';
-    document.getElementById('about-page').style.alignItems = 'start';
+    document.getElementById('about-page').classList.add('active');
     const controlsBox = document.querySelector('.bottom-left-controls'); 
     if (controlsBox) controlsBox.style.display = 'none'; 
 }
 
 function closeAbout() { 
     isAboutPage = false; 
-    document.getElementById('about-page').style.display = 'none'; 
+    document.getElementById('about-page').classList.remove('active');
     const controlsBox = document.querySelector('.bottom-left-controls'); 
     if (controlsBox) controlsBox.style.setProperty('display', 'flex', 'important'); 
 }
@@ -200,9 +197,8 @@ function updateDetailView(subPage) {
                 <div>
                     <p style="margin-top: 0; text-align: left;">${chapterData[selectedSatIndex].testoMissione}</p>
                 </div>
-                <div class="about-media-box" style="position: relative; width: 100%; height: 350px;">
+                <div class="about-media-box" style="position: relative; width: 100%; height: 350px; cursor: pointer;" onclick="openExternalFrame()">
                     <div class="expand-hint">${labels.expand}</div>
-                    <div style="position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer; z-index:15;" onclick="openExternalFrame()"></div>
                     <iframe src="${frameLinks[selectedSatIndex]}" style="width:100%; height:100%; border:none; pointer-events:none;"></iframe>
                 </div>
             </div>`;
@@ -218,16 +214,16 @@ function updateDetailView(subPage) {
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px;">
                     <div>
-                        <b>${labels.agency}</b><span>${sat.specs.agency}</span>
-                        <b>${labels.launch}</b><span>${sat.specs.launch}</span>
-                        <b>${labels.mass}</b><span>${sat.specs.mass}</span>
-                        <b>${labels.orbit}</b><span>${sat.specs.orbit}</span>
+                        <div class="data-row"><b>${labels.agency}</b><span>${sat.specs.agency}</span></div>
+                        <div class="data-row"><b>${labels.launch}</b><span>${sat.specs.launch}</span></div>
+                        <div class="data-row"><b>${labels.mass}</b><span>${sat.specs.mass}</span></div>
+                        <div class="data-row"><b>${labels.orbit}</b><span>${sat.specs.orbit}</span></div>
                     </div>
                     <div>
-                        <b>${labels.status}</b><span>${sat.specs.status}</span>
-                        <b>${labels.size}</b><span>${sat.specs.size}</span>
-                        <b>${labels.cost}</b><span>${sat.specs.cost}</span>
-                        <b>${labels.life}</b><span>${sat.specs.life}</span>
+                        <div class="data-row"><b>${labels.status}</b><span>${sat.specs.status}</span></div>
+                        <div class="data-row"><b>${labels.size}</b><span>${sat.specs.size}</span></div>
+                        <div class="data-row"><b>${labels.cost}</b><span>${sat.specs.cost}</span></div>
+                        <div class="data-row"><b>${labels.life}</b><span>${sat.specs.life}</span></div>
                     </div>
                 </div>
                 <div class="tech-media-box" style="width: 100%;">

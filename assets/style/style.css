@@ -257,6 +257,32 @@ canvas {
 /* ==========================================================================
    4. PAGINA DELLE FONTI (SOURCES) E POP-UP ABOUT
    ========================================================================== */
+#about-page {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100vh; 
+    background: #000; 
+    z-index: 400; 
+    display: none;
+    box-sizing: border-box; 
+    padding: 120px 40px 40px 40px; 
+    overflow-y: auto;
+}
+
+#about-page.active {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+    align-items: start;
+}
+
+#about-page.active ~ #ui-layer .bottom-left-controls,
+#about-page.active ~ .bottom-left-controls {
+    display: none !important;
+}
+
 #sources-page {
     position: fixed; 
     top: 0; 
@@ -368,6 +394,13 @@ canvas {
     z-index: 510;
 }
 
+.chapter-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    pointer-events: auto;
+}
+
 .chapter-btn { 
     padding: 15px; 
     border: 0.5px solid white; 
@@ -462,19 +495,17 @@ canvas {
 }
 
 /* Allineamento Griglia Dati con l'inizio del testo di Mission */
+.data-row {
+    margin-bottom: 12px;
+}
+
 .tech-info-block b { 
     color: white; 
     text-transform: none; 
     font-size: 9px; 
     display: block; 
-    margin-top: 12px; 
     letter-spacing: 1px; 
     opacity: 0.6; 
-}
-
-.tech-info-block div > div:first-child b:first-of-type,
-.tech-info-block div > div:nth-child(2) b:first-of-type {
-    margin-top: 0 !important;
 }
 
 .tech-info-block span { 
