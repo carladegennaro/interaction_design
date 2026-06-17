@@ -166,7 +166,7 @@ canvas {
     border: 0.5px solid white; 
 }
 
-/* Hover Preview Tecnica - Modificato per massima coerenza visiva e spaziatura */
+/* Hover Preview Tecnica */
 .tech-preview {
     position: absolute; 
     left: 160px; 
@@ -184,7 +184,6 @@ canvas {
     text-align: left;
 }
 
-/* Modificati selettori interni dell'anteprima per allineare gli spazi alla scheda Data */
 .tech-preview b {
     color: white;
     text-transform: none;
@@ -426,19 +425,28 @@ canvas {
     grid-column: 3 / 13; 
     font-size: 14px; 
     line-height: 1.8; 
-    opacity: 0.8; 
     text-align: left; 
     padding-right: 15px; 
     color: white;
     display: flex;
     flex-direction: column;
     margin-top: -20px;
+    opacity: 1 !important; /* Riporta l'intero contenitore a opacità 1 per sbloccare il bianco pieno del titolo e dei bottoni */
+}
+
+.detail-text p {
+    opacity: 0.8; /* Applica l'opacità solo al testo descrittivo della missione */
 }
 
 #detail-title-block {
     min-height: 120px;
     margin-bottom: 20px;
     display: block;
+}
+
+#detail-title {
+    color: #ffffff !important;
+    opacity: 1 !important;
 }
 
 .detail-text h1 { 
@@ -468,26 +476,30 @@ canvas {
     align-items: center;
 }
 
+/* ==========================================================================
+   COLORI IDENTICI PER BOTTONI SATELLITI E TAB (DATA/MISSION)
+   ========================================================================== */
 .tab-toggle-btn {
-    padding: 12px 20px;
-    background: transparent;
-    color: white;
-    border: 0.5px solid white;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.5) !important;
+    color: #ffffff !important;
+    border: 0.5px solid white !important; 
     cursor: pointer;
     font-size: 13px;
-    font-weight: normal;
+    letter-spacing: 1px;
     transition: 0.3s;
     min-width: 150px;
     box-sizing: border-box;
     text-align: left;
+    opacity: 1 !important;
 }
 
 .tab-toggle-btn:hover,
 .tab-toggle-btn.active {
-    background: white !important;
-    color: black !important;
-    font-weight: normal !important;
+    background: #ffffff !important;
+    color: #000000 !important;
     border: 0.5px solid white !important;
+    opacity: 1 !important;
 }
 
 #detail-content {

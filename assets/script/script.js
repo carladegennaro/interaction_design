@@ -105,8 +105,8 @@ function draw() {
         if (isHovered) { 
             push(); 
             noFill(); 
-            stroke(255); // Filetto bianco puro, senza trasparenze, come i bordi CSS
-            strokeWeight(0.5); // Stesso spessore identico di 0.5px del resto del layout
+            stroke(255); 
+            strokeWeight(0.5); 
             let d = s.pos.mag(); 
             let v1 = createVector(1, 0, 0); 
             let v2 = s.pos.copy().normalize(); 
@@ -201,12 +201,16 @@ function closeSources() { isSourcesPage = false; document.getElementById('source
 function updateDetailView(subPage) {
     currentDetailSubPage = subPage; const sat = satellites[selectedSatIndex]; const container = document.getElementById('detail-content');
     const titleEl = document.getElementById('detail-title');
-    if (titleEl) titleEl.textContent = chapterData[selectedSatIndex].nomeIntero;
+    if (titleEl) {
+        titleEl.textContent = chapterData[selectedSatIndex].nomeIntero;
+    }
 
-    const techBtn = document.getElementById('tab-btn-tech'); const aboutBtn = document.getElementById('tab-btn-about');
-    if (techBtn && aboutBtn) {
-        if (subPage === 'tech') { techBtn.classList.add('active'); aboutBtn.classList.remove('active'); } 
-        else { aboutBtn.classList.add('active'); techBtn.classList.remove('active'); }
+    const tabToggleContainer = document.querySelector('.sub-page-tabs');
+    if (tabToggleContainer) {
+        tabToggleContainer.innerHTML = `
+            <button id="tab-btn-tech" class="tab-toggle-btn ${subPage === 'tech' ? 'active' : ''}" onclick="updateDetailView('tech')">Data</button>
+            <button id="tab-btn-about" class="tab-toggle-btn ${subPage === 'about' ? 'active' : ''}" onclick="updateDetailView('about')">Mission</button>
+        `;
     }
 
     if (!container) return;
