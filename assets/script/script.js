@@ -102,7 +102,27 @@ function draw() {
     
     for (let i = 0; i < satellites.length; i++) {
         let s = satellites[i]; let isHovered = (hoveredIndex === i);
-        if (isHovered) { push(); noFill(); stroke(255, 50); let d = s.pos.mag(); let v1 = createVector(1, 0, 0); let v2 = s.pos.copy().normalize(); let axis = v1.cross(v2); let angle = acos(v1.dot(v2)); rotate(angle, axis); ellipse(0, 0, d * 2, d * 2); pop(); }
+        if (isHovered) { 
+            push(); 
+            noFill(); 
+            stroke(255); // Filetto bianco puro, senza trasparenze, come i bordi CSS
+            strokeWeight(0.5); // Stesso spessore identico di 0.5px del resto del layout
+            let d = s.pos.mag(); 
+            let v1 = createVector(1, 0, 0); 
+            let v2 = s.pos.copy().normalize(); 
+            let axis = v1.cross(v2); 
+            let angle = acos(v1.dot(v2)); 
+            rotate(angle, axis); 
+            
+            let orbitSegments = 128;
+            beginShape();
+            for (let j = 0; j <= orbitSegments; j++) {
+                let theta = (TWO_PI / orbitSegments) * j;
+                vertex(cos(theta) * d, sin(theta) * d);
+            }
+            endShape();
+            pop(); 
+        }
         drawOrbitMarker(s.pos, isHovered);
         push(); translate(s.pos.x, s.pos.y, s.pos.z); rotateY(-rotY); rotateX(-rotX); noStroke(); fill(s.color);
         let shapeSize = isHovered ? 25 : 12; rectMode(CENTER); rect(0, 0, shapeSize, shapeSize * 0.6); fill(255, 200); rect(0, 0, shapeSize * 0.2, shapeSize * 1.2); pop();
